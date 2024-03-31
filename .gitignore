@@ -1,0 +1,13 @@
+/front/.env
+/back/.env
+/back/node_modules
+/front/node_modules
+/front/.pnp
+/front/.pnp.js
+
+# testing
+/front/coverage
+
+# production
+/front/build
+

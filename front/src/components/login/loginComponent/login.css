@@ -1,0 +1,40 @@
+.inputContainer{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color:rgba(237, 251, 237, 1);
+    width: 35rem;
+    height: 25rem;
+    border-radius: 25px;
+    margin: 0 auto;
+}
+
+.input{
+    width: 20rem;
+    height: 2rem;
+    margin:0.2rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #1AEB4B;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.butonLogin{
+    width: fit;
+    height: 2rem;
+    margin: 1rem;
+    border-radius: 10px;
+    border: none;
+    background-color: #1AEB4B;
+    transition: background-color 1s;
+}
+
+.butonLogin:hover{
+    background-color: #008BF8;
+    color:white;
+}
