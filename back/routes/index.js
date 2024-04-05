@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const UserRouter = require('./user');
+const userRouter = require('./user');
+const landRouter = require('./land_plot');
 
-router.use('/user',UserRouter);
+router.use('/user',userRouter);
+router.use('/landPlot',landRouter);
 
 module.exports = router;

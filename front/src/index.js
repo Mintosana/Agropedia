@@ -6,8 +6,8 @@ import {
   Route} from 'react-router-dom';
 import './index.css';
 
-import LoginPage from "./components/login/loginPage"
-import Homepage from "./components/homepage"
+import LoginPage from "./pages/loginPage"
+import Homepage from "./pages/homepage"
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

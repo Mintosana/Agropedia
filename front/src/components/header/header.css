@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: rgb(27, 217, 133);
+  }
+  
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+  }
+  
+  .nav-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-right: 2rem;
+  }
+  
+  .nav-item:link,
+  .nav-item:visited {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    transition: all 0.2s;
+  }
+  
+  .nav-item:hover,
+  .nag-item:active {
+    color: #0069ea;
+  }
+  
+  .company-logo {
+    width: 10vh;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+  
+  .btn-nav {
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: none;
+  }
+  
+  ion-icon {
+    height: 3.5rem;
+    width: 3.5rem;
+  }
+  
+  ion-icon[name="close-outline"] {
+    display: none;
+  }
+  
+  @media (max-width: 625px) {
+    .nav-main {
+      background-color: rgba(255, 255, 255, 0.9);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+  
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      opacity: 0;
+      pointer-events: none;
+      visibility:hidden;
+    }
+  
+    .nav-open .nav-main {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+  
+    .nav-list {
+      flex-direction: column;
+      font-size: 1.4rem;
+      gap: 5rem;
+    }
+  
+    .btn-nav {
+      display: block;
+      z-index: 1000;
+    }
+  
+    .nav-open ion-icon[name="close-outline"] {
+      display: block;
+    }
+  
+    .nav-open ion-icon[name="menu-outline"] {
+      display: none;
+    }
+  }
+  

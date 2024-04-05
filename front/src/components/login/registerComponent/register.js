@@ -41,6 +41,7 @@ export default function Register({ loginState }) {
             const responsePromise = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/user/register`,
                 {
                     method: "POST",
+                    credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data),
                 }
