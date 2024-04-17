@@ -8,6 +8,10 @@ module.exports = (db) =>{
             allowNull:false,
             autoIncrement:true,
         },
+        name:{
+            type:DataTypes.STRING,
+            allowNull:false,
+        },
         size:{
             type:DataTypes.FLOAT,
             allowNull:false,

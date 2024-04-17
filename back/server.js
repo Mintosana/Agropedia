@@ -3,12 +3,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const connection = require("./models/index").db;
-const cookieParser = require("cookie-parser");
+const jwtValidation = require('./middleware/jwt_validation').requireAuth;
 
 const router = require('./routes');
+const loginController = require("./controllers/user").login;
 const port = process.env.PORT;
 
-app.use(cookieParser());
 app.use(express.json());
 app.use(
     cors({
@@ -23,14 +23,15 @@ app.use(
         ],
     })
 );
-
+app.post("/login",loginController);
+app.use(jwtValidation)
 app.use('/api',router);
 
 app.get("/", (req, res) => {
-    res.status(201).send("banana");
+    res.status(201).send("Salutare");
 });
 
-app.get("/reset", async (req, res) => {
+app.get("/reset", jwtValidation ,async (req, res) => {
     try {
         connection.sync({
             force: true,

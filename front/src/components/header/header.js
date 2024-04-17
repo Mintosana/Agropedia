@@ -2,6 +2,7 @@ import { IconContext} from 'react-icons';
 import { IoIosMenu } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { useState } from 'react';
+import {Link} from 'react-router-dom';
 import './header.css';
 
 export default function Header(){
@@ -17,9 +18,9 @@ export default function Header(){
                 <img className="company-logo" alt="Agropedia Logo" src="logo.png"></img>
                 <nav className="nav-main">
                     <ul className="nav-list">
-                        <li><a className="nav-item" href="#">Marketplace</a></li>
-                        <li><a className="nav-item" href="#">Loturi de pamant</a></li>
-                        <li><a className="nav-item" href="#">Profil</a></li>
+                        <li><Link className="nav-item" to="/marketplace">Marketplace</Link></li>
+                        <li><Link className="nav-item" to="/plot">Loturi de pamant</Link></li>
+                        <li><Link className="nav-item" to="/profile">Profil</Link></li>
                     </ul>
                 </nav>
                 <button className="btn-nav" onClick={handleClick}>

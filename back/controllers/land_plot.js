@@ -15,15 +15,21 @@ const landController = {
 
     getPlotsByUserId: async (req, res) => {
         try {
-            const id = req.params.id;
+            const id = req.params.id; // id-ul userului, nu al producatorului
+            console.log(id);
+            const producer = await producerDb.findOne({
+                where: {
+                    userId : id,
+                }
+            })
             const plots = await landDb.findAll({
                 where: {
-                    producerId: id,
+                    producerId: producer.dataValues.id,
 
                 }
             });
             if (plots.length === 0) {
-                res.status(404).send({ message: "Userul cu id-ul specificat nu are nici un lot de pamant" });
+                res.status(404).send({ message: "Userul cu id-ul specificat nu are nici un lot de pamant", status:404 });
             }
             else {
                 res.status(200).send(plots);
@@ -39,15 +45,15 @@ const landController = {
     createPlot: async (req, res) => {
         try {
             const plot = {
+                name : req.body.name,
                 size: req.body.size,
                 landType: req.body.landType,
                 producerId: req.body.producerId,
                 productId: req.body.productId,
             }
-
             assignedProducer = await producerDb.findAll({
                 where: {
-                    id: plot.producerId,
+                    userId: plot.producerId,
                 }
             })
             assignedProduct = await productDb.findAll({

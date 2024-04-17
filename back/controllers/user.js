@@ -104,11 +104,11 @@ const userController = {
                     res.status(400).send({ message: "Email sau parola gresita!" })
 
                 } else {
+                    // AICI TOATA VALIDAREA ESTE OK ----------------
                     const jwtToken = jwt.sign({id: storedUser.id},process.env.JWT_SECRET,{
                         expiresIn: process.env.JWT_EXPIRE_TIME
                     })
-                    res.cookie("jwtToken", jwtToken , {httpOnly:true ,maxAge : process.env.COOKIE_EXPIRE_TIME});
-                    res.status(200).send({ message: "Userul se poate loga!" })
+                    res.status(200).send({ message: "Userul se poate loga!", token : jwtToken , id: storedUser.id})
                 }
             }
 

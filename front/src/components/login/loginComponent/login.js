@@ -1,9 +1,11 @@
 import "./login.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login({ loginState }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleInputEmail = (event) => {
     setEmail(event.target.value);
@@ -22,7 +24,7 @@ export default function Login({ loginState }) {
       alert("Unul dintre campuri nu este completat!");
     }
     else {
-      const responsePromise = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/user/login`,
+      const responsePromise = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/login`,
         {
           method: "POST",
           credentials: "include",
@@ -30,11 +32,18 @@ export default function Login({ loginState }) {
           body: JSON.stringify(data),
         });
 
+        const consumedResponse = await responsePromise.json();
+        
+        
+        localStorage.setItem("userId",consumedResponse.id);
+        localStorage.setItem("token",consumedResponse.token);
+
+
       if (responsePromise.ok) {
-        alert("Utilizator a fost logat!!");
+        navigate(`/homepage`);
       }
       else {
-        const consumedResponse =await  responsePromise.json()
+        const consumedResponse = await  responsePromise.json()
         alert(consumedResponse.message);
       }
     }

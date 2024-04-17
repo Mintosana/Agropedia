@@ -6,23 +6,31 @@ import { useState, useEffect } from 'react';
 
 
 export default function Homepage() {
-    const [land, setLand] = useState(null);
+    const [land, setLand] = useState([]);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/user/getAllUsers`)
+        const userToken = localStorage.getItem("token");
+        const id = localStorage.getItem("userId");
+        console.log(id);
+        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/getPlotsByUserId/${id}`,{
+            headers: {
+                "Authorization" : `${userToken}`,
+            }
+        })
             .then(res => {
-                return res.json()
+                return res.json();
             })
             .then((landData) => {
-                console.log(landData);
-                setLand(landData);
+                if (landData.status !== 401 && landData.status !== 404){
+                    setLand(landData);
+                }
             })
     }, []);
 
     return (
         <>
             <Header></Header>
-            {land && <LandList landList={land}/>}
+            {land && <LandList landList={land} setLand = {setLand} />}
         </>
     )
 }

@@ -12,13 +12,10 @@ import Homepage from "./pages/homepage"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<LoginPage/>}/>
       <Route path="/homepage" element={<Homepage/>}/>
     </Routes>
     </BrowserRouter>
-    
-  </React.StrictMode>
 );
