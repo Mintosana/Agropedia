@@ -24,7 +24,7 @@ app.use(
     })
 );
 app.post("/login",loginController);
-app.use(jwtValidation)
+//app.use(jwtValidation)
 app.use('/api',router);
 
 app.get("/", (req, res) => {

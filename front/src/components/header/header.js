@@ -19,7 +19,7 @@ export default function Header(){
                 <nav className="nav-main">
                     <ul className="nav-list">
                         <li><Link className="nav-item" to="/marketplace">Marketplace</Link></li>
-                        <li><Link className="nav-item" to="/plot">Loturi de pamant</Link></li>
+                        <li><Link className="nav-item" to="/homepage">Loturi de pamant</Link></li>
                         <li><Link className="nav-item" to="/profile">Profil</Link></li>
                     </ul>
                 </nav>

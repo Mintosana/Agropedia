@@ -1,6 +1,5 @@
 import Header from '../components/header/header';
 import LandList from '../components/landList/landList';
-import './css/homepage.css';
 
 import { useState, useEffect } from 'react';
 

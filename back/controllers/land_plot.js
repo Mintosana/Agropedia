@@ -16,7 +16,6 @@ const landController = {
     getPlotsByUserId: async (req, res) => {
         try {
             const id = req.params.id; // id-ul userului, nu al producatorului
-            console.log(id);
             const producer = await producerDb.findOne({
                 where: {
                     userId : id,
@@ -24,7 +23,7 @@ const landController = {
             })
             const plots = await landDb.findAll({
                 where: {
-                    producerId: producer.dataValues.id,
+                    producerId: producer.id,
 
                 }
             });
