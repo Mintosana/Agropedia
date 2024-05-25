@@ -12,6 +12,10 @@ module.exports = (db) =>{
             type:DataTypes.INTEGER,
             allowNull:false,
         },
+        message:{
+            type:DataTypes.STRING,
+            allowNull:true,
+        },
     },{
         tableName:"Transaction",
         timestamps:true,

@@ -37,6 +37,7 @@ export default function Login({ loginState }) {
         
         localStorage.setItem("userId",consumedResponse.id);
         localStorage.setItem("token",consumedResponse.token);
+        localStorage.setItem("type",consumedResponse.type);
 
 
       if (responsePromise.ok) {

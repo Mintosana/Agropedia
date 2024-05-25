@@ -15,6 +15,14 @@ module.exports = (db)=>{
         totalQuantity:{
             type:DataTypes.INTEGER,
             allowNull:false,
+        },
+        announcementTitle:{
+            type:DataTypes.STRING,
+            allowNull: false,
+        },
+        description:{
+            type:DataTypes.STRING,
+            allowNull: false,
         }
     },{
         tableName:"Sale_announcement",

@@ -30,8 +30,8 @@ app.use('/api',router);
 app.get("/", (req, res) => {
     res.status(201).send("Salutare");
 });
-
-app.get("/reset", jwtValidation ,async (req, res) => {
+// app.get("/reset", jwtValidation ,async (req, res) => {
+app.get("/reset",async (req, res) => {
     try {
         connection.sync({
             force: true,

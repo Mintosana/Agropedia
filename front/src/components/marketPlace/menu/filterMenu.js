@@ -10,6 +10,7 @@ export default function FilterMenu(){
              minWidth: '20%',
              margin: '0 10% 0 0',
              backgroundColor: "white",
+             height:'100vh',
              }}>
         <PriceFilter />
         <ProductType />

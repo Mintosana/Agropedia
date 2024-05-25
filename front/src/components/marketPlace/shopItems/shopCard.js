@@ -1,25 +1,52 @@
 import * as React from 'react';
+import {Link} from 'react-router-dom';
 import {Card, CardActions, CardContent,CardMedia, Button, Typography } from '@mui/material';
-export default function ShopCard(){
+import {useState,useEffect} from 'react';
+
+export default function ShopCard({saleInfo}){
+    //console.log(saleInfo);
+
+    const [productData,setProductData] = useState([]);
+    const [producerData,setProducerData] = useState([]);
+    useEffect(()=>{
+        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/product/getProductById/${saleInfo.productId}`)
+        .then((promise)=>{
+            return promise.json()
+        })
+        .then((res) =>{
+            setProductData(res);
+        })
+
+        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/user/getUserByProducerId/${saleInfo.producerId}`)
+        .then((promise)=>{
+            return promise.json()
+        })
+        .then((res) =>{
+            setProducerData(res);
+        })
+    },[])
+
     return(
         <>
-            <Card sx={{ minWidth: 300, minHeight: 400 }}>
+            <Card sx={{ width: 300, height: 400 }}>
                 <CardMedia 
                     sx={{height:225, margin:"0 0 1rem 0", objectFit:"cover"}}
                     image="/rosii.jpeg"
                     />
                 <CardContent>
                     <Typography variant="h5" component="div">
-                        Produs de calitate
+                        {saleInfo.announcementTitle}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        Gradinarul Înțelept
+                        {`${producerData.name}`}
                     </Typography>
                 </CardContent>
                 <CardActions sx={{display:"flex", justifyContent: "space-between", padding:"0 1rem 0 1rem"}}>
+                    <Link to={`/marketplace/${saleInfo.id}`} style={{ textDecoration: 'none'}}>
                     <Button variant="contained" size="small">Află mai multe!</Button>
+                    </Link> 
                     <Typography variant="h5">
-                        {"300RON"}
+                        {`${saleInfo.price} Lei/Kg`}
                     </Typography>
                 </CardActions>
             </Card>

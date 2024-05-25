@@ -108,7 +108,7 @@ const userController = {
                     const jwtToken = jwt.sign({id: storedUser.id},process.env.JWT_SECRET,{
                         expiresIn: process.env.JWT_EXPIRE_TIME
                     })
-                    res.status(200).send({ message: "Userul se poate loga!", token : jwtToken , id: storedUser.id})
+                    res.status(200).send({ message: "Userul se poate loga!", token : jwtToken , id: storedUser.id, type: storedUser.userType});
                 }
             }
 
@@ -142,6 +142,39 @@ const userController = {
         }
         catch (error) {
             console.log(error)
+            res.status(500).send({ message: "Eroare de la server!" })
+        }
+    },
+
+    getUserByProducerId: async(req,res) =>{
+        const producerId = req.params.id;
+        try{
+            const producerData = await producerDb.findOne({
+                where:{
+                    id: producerId
+                }
+            })
+            if(producerData !== null){
+                const userData = await userDb.findOne({
+                    where:{
+                        id: producerData.userId,
+                    }
+                })
+                if(userData === null){
+                    res.status(404).send("Utilizatorul cu acest id nu exista!")
+                }
+                else{
+                    res.status(200).send(userData);
+                }
+            }
+            else{
+                res.status(404).send("Producatorul cu acest id nu exista!")
+            }
+           
+        
+        }
+        catch(error){
+            console.log(error);
             res.status(500).send({ message: "Eroare de la server!" })
         }
     },

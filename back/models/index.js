@@ -87,10 +87,10 @@ contractDb.belongsTo(productDb,{
     }
 })
 
-clientDb.hasMany(transactionDb);
-transactionDb.belongsTo(clientDb,{
+userDb.hasMany(transactionDb);
+transactionDb.belongsTo(userDb,{
     foreignKey:{
-        name:"clientId",
+        name:"userId",
         allowNull:false,
     }
 })

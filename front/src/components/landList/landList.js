@@ -1,34 +1,43 @@
 import * as React from 'react';
-import {Modal,Typography,Box,TextField,Button,Autocomplete} from '@mui/material';
+import { Modal, Typography, Box, TextField, Button, Autocomplete } from '@mui/material';
 import './landList.css'
 
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import LandCard from './landCard';
 
 export default function LandList({ landList, setLand }) {
 
-    const [name,setName] = useState('');
+    const [name, setName] = useState('');
     const [size, setSize] = useState(0);
-    const [type,setType] = useState('');
-    const [vegetable,setVegetable] = useState(''); // ramane sa il folosesc
+    const [type, setType] = useState('');
+    const [vegetable, setVegetable] = useState(''); // ramane sa il folosesc
+    const [vegetableList, setVegetableList] = useState([]);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const plotType = ["Solar","Sera","Camp"];
-    const vegetableList = ["Rosii","Castraveti","Varza"];
+    const plotType = ["Solar", "Sera", "Camp"];
 
-    const handleName = (event) =>{
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/product/getAllProducts`
+        ).then((res) => {
+            return res.json();
+        }).then((productData) => {
+                setVegetableList(productData.map(element => element.productName));
+        })
+    }, [])
+
+    const handleName = (event) => {
         setName(event.target.value);
     }
-    const handleSize = (event) =>{
+    const handleSize = (event) => {
         setSize(event.target.value);
     }
-    const handleType = (event, value) =>{
+    const handleType = (event, value) => {
         setType(value);
     }
-    const handleVegetable = (event, value) =>{
+    const handleVegetable = (event, value) => {
         setVegetable(value);
     }
 
@@ -56,10 +65,9 @@ export default function LandList({ landList, setLand }) {
             size: size,
             landType: type,
             producerId: producerId,
-            productId: 1
+            productId: (vegetableList.findIndex(v => v === vegetable) + 1)
         }
-        console.log(landData)
-
+        
         const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/createLand`, {
             method: "POST",
             mode: "cors",
@@ -72,7 +80,7 @@ export default function LandList({ landList, setLand }) {
         })
 
         const consumedResponse = await response.json();
-        console.log(consumedResponse);
+        //console.log(consumedResponse);
 
         setLand([...landList, consumedResponse]);
         handleClose();
@@ -94,7 +102,7 @@ export default function LandList({ landList, setLand }) {
                     </Typography>
                     <Box className="plotElementsBox">
                         <TextField className="plotAddField" label="Nume " variant="outlined" margin="dense" onChange={handleName} />
-                        <TextField className="plotAddField" label="Marime" variant="outlined" margin="dense" onChange={handleSize} />
+                        <TextField className="plotAddField" type="number" label="Marime" variant="outlined" margin="dense" onChange={handleSize} />
                         <Autocomplete
                             disablePortal
                             className="plotSelector"
@@ -111,12 +119,12 @@ export default function LandList({ landList, setLand }) {
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Legume" />}
                         />
-                        <Button variant="contained" sx={{margin: "1rem"}} onClick={handleClick}>Creaza lot de pământ</Button>
+                        <Button variant="contained" sx={{ margin: "1rem" }} onClick={handleClick}>Creaza lot de pământ</Button>
                     </Box>
                 </Box>
             </Modal>
             {landList.map((land) =>
-                <LandCard individualLand={land} setLand={setLand} landList={landList}/>
+                <LandCard individualLand={land} setLand={setLand} landList={landList} />
             )}
         </div>
     )

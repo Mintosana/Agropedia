@@ -6,30 +6,34 @@ import { useState, useEffect } from 'react';
 
 export default function Homepage() {
     const [land, setLand] = useState([]);
-
+    const [userType, setUserType] = useState(localStorage.getItem("type"))
     useEffect(() => {
         const userToken = localStorage.getItem("token");
         const id = localStorage.getItem("userId");
-        console.log(id);
-        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/getPlotsByUserId/${id}`,{
-            headers: {
-                "Authorization" : `${userToken}`,
-            }
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then((landData) => {
-                if (landData.status !== 401 && landData.status !== 404){
-                    setLand(landData);
+        if (userType === "Producator") {
+            fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/getPlotsByUserId/${id}`, {
+                headers: {
+                    "Authorization": `${userToken}`,
                 }
             })
+                .then(res => {
+                    return res.json();
+                })
+                .then((landData) => {
+                    if (landData.status !== 401 && landData.status !== 404) {
+                        setLand(landData);
+                        console.log(landData);
+                    }
+                })
+        }
+
     }, []);
 
     return (
         <>
             <Header></Header>
-            {land && <LandList landList={land} setLand = {setLand} />}
+            {userType === "Producator" && land && <LandList landList={land} setLand={setLand} />}
+            {userType === "Client" && <h3>Salutare! Doresti sa cumperi ceva? acceseaza marketplace-ul</h3>}
         </>
     )
 }
