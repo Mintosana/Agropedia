@@ -10,7 +10,7 @@ export default function Register({ loginState }) {
     const [type, setType] = useState("Client");
 
     const handleClick = async () => {
-        console.log(`${username} ${email} ${type} ${password}`);
+        // console.log(`${username} ${email} ${type} ${password}`);
         if(!username || !email || !type || !password || !phoneNumber){
             alert("Unul dintre campuri nu este completat!");
         }

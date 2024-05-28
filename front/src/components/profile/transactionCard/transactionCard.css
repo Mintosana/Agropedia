@@ -1,0 +1,17 @@
+.individualTransactionCard{
+    display:flex;
+    justify-content: space-evenly;
+    gap:3rem;
+
+    background-color: aquamarine;
+    border-radius: 20px;
+    margin: 0.5rem 0 0.5rem 0;
+    padding: 0.5rem;
+}
+
+.transactionButtons{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:2rem;
+}

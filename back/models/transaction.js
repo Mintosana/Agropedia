@@ -16,6 +16,10 @@ module.exports = (db) =>{
             type:DataTypes.STRING,
             allowNull:true,
         },
+        status:{
+            type:DataTypes.STRING,
+            defaultVaue: "pending", 
+        }
     },{
         tableName:"Transaction",
         timestamps:true,

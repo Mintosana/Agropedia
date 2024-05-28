@@ -4,5 +4,7 @@ const transactionController = require('../controllers/index').transactionControl
 
 router.post("/createTransaction", transactionController.createTransaction);
 router.get("/getAllTransactionsById/:id",transactionController.getAllTransactionsById);
-
+router.get("/getAllPendingTransactionsById/:id",transactionController.getAllPendingTransactionsById);
+router.patch("/acceptTransaction/:id",transactionController.acceptTransaction);
+router.patch("/rejectTransaction/:id",transactionController.rejectTransaction);
 module.exports = router;
