@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const {saleDb} = require('../models');
 
 const saleController = {
@@ -12,7 +13,13 @@ const saleController = {
                 productId:req.body.productId,
             }
     
-            if(!saleData.price || !saleData.totalQuantity || !saleData.productId || !saleData.producerId || !saleData.description || !saleData.announcementTitle){
+            if(
+                !saleData.price || 
+                !saleData.totalQuantity || 
+                !saleData.productId || 
+                !saleData.producerId || 
+                !saleData.description || 
+                !saleData.announcementTitle){
                 res.status(400).send({message:"Un camp nu a fost completat!"})
             }
             else{
@@ -29,7 +36,13 @@ const saleController = {
 
     getAllSales: async(req,res) =>{
         try{
-            const sales = await saleDb.findAll();
+            const sales = await saleDb.findAll({
+                where: {
+                    totalQuantity:{
+                        [Op.gt]: 0,
+                    }
+                }
+            });
             res.status(200).send(sales);
         }
         catch(err){

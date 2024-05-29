@@ -40,7 +40,7 @@ const landController = {
         }
     },
 
-    // ESTE NEVOIE DE VALIDARI AND STUFF, ALSO DE UNDE IAU producerId si productId ???
+
     createPlot: async (req, res) => {
         try {
             const plot = {
@@ -50,9 +50,10 @@ const landController = {
                 producerId: req.body.producerId,
                 productId: req.body.productId,
             }
+            console.log(plot);
             assignedProducer = await producerDb.findAll({
                 where: {
-                    userId: plot.producerId,
+                    id: plot.producerId,
                 }
             })
             assignedProduct = await productDb.findAll({
@@ -61,18 +62,19 @@ const landController = {
                 }
             })
             if (assignedProducer.length === 0) {
-                res.status(400).send({ message: "Producatorul asignat lotului de pamant nu exista in baza de date" });
+                res.status(400).send({
+                     message: "Producatorul asignat lotului de pamant nu exista in baza de date" 
+                    });
             }
             else if (assignedProduct.length === 0) {
-                res.status(400).send({ message: "Produsul asignat lotului de pamant nu exista in baza de date" });
+                res.status(400).send({
+                     message: "Produsul asignat lotului de pamant nu exista in baza de date" 
+                    });
             }
             else {
                 const createdPlot = await landDb.create(plot);
-                console.log(createdPlot);
                 res.status(200).send(createdPlot);
             }
-
-
         }
         catch (error) {
             console.log(error)
@@ -108,10 +110,14 @@ const landController = {
                     }
                 })
                 if (assignedProducer.length === 0) {
-                    res.status(400).send({ message: "Producatorul asignat lotului de pamant nu exista in baza de date" });
+                    res.status(400).send({ 
+                        message: "Producatorul asignat lotului de pamant nu exista in baza de date" 
+                    });
                 }
                 else if (assignedProduct.length === 0) {
-                    res.status(400).send({ message: "Produsul asignat lotului de pamant nu exista in baza de date" });
+                    res.status(400).send({
+                         message: "Produsul asignat lotului de pamant nu exista in baza de date" 
+                        });
                 }
                 else {
                     await landDb.update(newPlot, {

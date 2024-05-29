@@ -3,7 +3,6 @@ import { useState} from 'react';
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 export default function Maps(){
-
   const libraries = useState(["places"]);
   const mapContainerStyle = {
     width: "65vw",
@@ -16,7 +15,7 @@ export default function Maps(){
   };
 
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyC4ZzPVR1ikmjgmbuv3vLGzPXeajDY62sg",
+    googleMapsApiKey: `${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`,
     libraries,
   });
 

@@ -56,8 +56,6 @@ const userController = {
                         }
                         await clientDb.create(clientUser);
                     }
-
-                    // AICI REALIZAM TOKEN-UL SI IL TRIMITEM CA SI COOKIE
                     const jwtToken = jwt.sign({id: createdUser.id},process.env.JWT_SECRET,{
                             expiresIn: process.env.JWT_EXPIRE_TIME
                         })
@@ -104,11 +102,14 @@ const userController = {
                     res.status(400).send({ message: "Email sau parola gresita!" })
 
                 } else {
-                    // AICI TOATA VALIDAREA ESTE OK ----------------
                     const jwtToken = jwt.sign({id: storedUser.id},process.env.JWT_SECRET,{
                         expiresIn: process.env.JWT_EXPIRE_TIME
                     })
-                    res.status(200).send({ message: "Userul se poate loga!", token : jwtToken , id: storedUser.id, type: storedUser.userType});
+                    res.status(200).send({ 
+                        message: "Userul se poate loga!",
+                        token : jwtToken, 
+                        id: storedUser.id, 
+                        type: storedUser.userType});
                 }
             }
 

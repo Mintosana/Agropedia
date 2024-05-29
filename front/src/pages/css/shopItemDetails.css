@@ -44,3 +44,33 @@
     align-items: center;
     justify-content: center;
 }
+
+/* Aici este CSS-ul pentru sectiunea "profil" */
+.profileComponent{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width:30%;
+    height: auto;
+    background-color: white;
+    border-radius: 30px;
+    margin: 1rem;
+}
+
+.userLogo{
+    width:10rem;
+    height: 10rem;
+}
+
+/* Aici este CSS-ul pentru sectiunea "review" */
+.reviewSection{
+    background-color: white;
+    display:inline-block;
+    padding: 2rem;
+    border-radius: 30px;
+}
+
+.reviewRateSection{
+    display: flex;
+    justify-content: space-between ;
+}

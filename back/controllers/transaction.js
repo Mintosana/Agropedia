@@ -8,6 +8,7 @@ const transactionController = {
                 userId: req.body.userId,
                 announcementId: req.body.announcementId,
                 message: req.body.message,
+                status: req.body.status,
             }
             console.log(transactionData);
             if (!transactionData.quantity || !transactionData.userId || !transactionData.announcementId) {
@@ -25,7 +26,6 @@ const transactionController = {
     },
     getAllTransactionsById: async (req, res) => {
         try {
-            //primesc announcement ID-ul
             const transactions = [];
             const userId = req.params.id;
             const producator = await producerDb.findOne({
@@ -38,7 +38,6 @@ const transactionController = {
                     producerId: producator.id,
                 }
             })
-
             const transactionPromises = sale.map(async (element) => {
                 const transaction = await transactionDb.findAll({
                     where: {
@@ -48,8 +47,6 @@ const transactionController = {
                 transactions.push(...transaction);
             });
             await Promise.all(transactionPromises);
-
-
             if (transactions.length !== 0) {
                 res.status(200).send(transactions);
             }
@@ -119,8 +116,19 @@ const transactionController = {
                             id: transactionId,
                         },
                     },
-                );
-                res.status(200).send(`Tranzactia cu id-ul ${transactionId} a fost acceptata`);
+                ); // total = 1000 , transaction = 200
+                const sale = await saleDb.findOne({
+                    where:{
+                        id : transaction.announcementId,
+                }})
+                if(sale.totalQuantity - transaction.quantity >= 0){
+                    await saleDb.increment({ totalQuantity: -transaction.quantity}, {where: {id: transaction.announcementId}});
+                    res.status(200).send(`Tranzactia cu id-ul ${transactionId} a fost acceptata`);
+                }
+                else{
+                    res.status(400).send("Nu se poate rezolva tranzactia, cantitatea este epuizata!");
+                    //return;
+                }    
             }
             else{
                 res.status(400).send("Tranzactia nu a putut fi modificata!")

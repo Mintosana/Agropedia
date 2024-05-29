@@ -13,14 +13,20 @@ export default function Profile(){
         .then(transactionList => {
             setTransactions(transactionList);
         })
+        .catch(error =>{
+            console.error("Eroare la primirea tranzactiilor:", error);
+            setTransactions([]);
+        })
     },[modified])
     return(
         <>
         <Header></Header>
         <h2>Profil lmao</h2>
+        {localStorage.getItem('type') == "Producator" &&
         <TransactionList>
         {transactions.map(transaction => <TransactionCard key={transaction.id} transactionData={transaction} setModified={setModified}></TransactionCard>)}
         </TransactionList>
+        }
         
         </>
     )

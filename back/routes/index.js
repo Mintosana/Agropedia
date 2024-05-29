@@ -7,6 +7,7 @@ const producerRouter = require('./producer');
 const saleRouter = require('./sale_announcement');
 const productRouter = require('./product');
 const transactionRouter = require('./transaction');
+const reviewRouter = require('./review')
 
 router.use('/user',userRouter);
 router.use('/landPlot',landRouter);
@@ -14,5 +15,6 @@ router.use('/product',productRouter);
 router.use("/producer",producerRouter);
 router.use('/sale',saleRouter);
 router.use('/transaction',transactionRouter);
+router.use('/review',reviewRouter);
 
 module.exports = router;

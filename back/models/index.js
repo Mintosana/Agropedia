@@ -23,6 +23,9 @@ const landModel = require("../models/land_plot");
 const landDb = landModel(db,sequelize);
 const productModel = require("../models/product");
 const productDb = productModel(db,sequelize);
+const reviewModel = require("./review");
+const sale_announcement = require('../models/sale_announcement');
+const reviewDb = reviewModel(db,sequelize);
 
 userDb.hasOne(adminDb);
 adminDb.belongsTo(userDb,{
@@ -75,6 +78,30 @@ producerDb.hasMany(contractDb);
 contractDb.belongsTo(producerDb,{
     foreignKey:{
         name:"producerId",
+        allowNull:false,
+    }
+})
+
+producerDb.hasMany(reviewDb);
+reviewDb.belongsTo(producerDb,{
+    foreignKey:{
+        name:"producerId",
+        allowNull:false,
+    }
+})
+
+saleDb.hasMany(reviewDb);
+reviewDb.belongsTo(saleDb,{
+    foreignKey:{
+        name:"announcementId",
+        allowNull:false,
+    }
+})
+
+userDb.hasMany(reviewDb, {foreignKey: 'reviewerId'});
+reviewDb.belongsTo(userDb,{
+    foreignKey:{
+        name:"reviewerId",
         allowNull:false,
     }
 })
@@ -147,5 +174,6 @@ module.exports = {
     saleDb,
     landDb,
     productDb,
+    reviewDb,
     db,
 }
