@@ -10,21 +10,25 @@ export default function LandList({ landList, setLand }) {
     const [name, setName] = useState('');
     const [size, setSize] = useState(0);
     const [type, setType] = useState('');
-    const [vegetable, setVegetable] = useState(''); // ramane sa il folosesc
+    const [location, setLocation] = useState('');
+    const [vegetable, setVegetable] = useState('');
     const [vegetableList, setVegetableList] = useState([]);
+    const [metrics, setMetrics] = useState('m²')
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const plotType = ["Solar", "Sera", "Camp"];
+    const plotMetrics = ['ar','m²','ha'];
+
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/product/getAllProducts`
         ).then((res) => {
             return res.json();
         }).then((productData) => {
-                setVegetableList(productData.map(element => element.productName));
+            setVegetableList(productData.map(element => element.productName));
         })
     }, [])
 
@@ -36,6 +40,10 @@ export default function LandList({ landList, setLand }) {
     }
     const handleType = (event, value) => {
         setType(value);
+        setMetrics(plotMetrics[plotType.findIndex(x => x === value)])
+    }
+    const handleLocation = (event) => {
+        setLocation(event.target.value);
     }
     const handleVegetable = (event, value) => {
         setVegetable(value);
@@ -64,10 +72,11 @@ export default function LandList({ landList, setLand }) {
             name: name,
             size: size,
             landType: type,
+            location: location,
             producerId: producerId,
             productId: (vegetableList.findIndex(v => v === vegetable) + 1)
         }
-        
+
         const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/createLand`, {
             method: "POST",
             mode: "cors",
@@ -80,8 +89,6 @@ export default function LandList({ landList, setLand }) {
         })
 
         const consumedResponse = await response.json();
-        //console.log(consumedResponse);
-
         setLand([...landList, consumedResponse]);
         handleClose();
     }
@@ -102,7 +109,8 @@ export default function LandList({ landList, setLand }) {
                     </Typography>
                     <Box className="plotElementsBox">
                         <TextField className="plotAddField" label="Nume " variant="outlined" margin="dense" onChange={handleName} />
-                        <TextField className="plotAddField" type="number" label="Marime" variant="outlined" margin="dense" onChange={handleSize} />
+                        <TextField className="plotAddField" label="Locatie " variant="outlined" margin="dense" onChange={handleLocation} />
+                        <TextField className="plotAddField" type="number" label={metrics ? `Marime in ${metrics}` : "Marime"} variant="outlined" margin="dense" onChange={handleSize} />
                         <Autocomplete
                             disablePortal
                             className="plotSelector"
@@ -124,7 +132,7 @@ export default function LandList({ landList, setLand }) {
                 </Box>
             </Modal>
             {landList.map((land) =>
-                <LandCard individualLand={land} setLand={setLand} landList={landList} />
+                <LandCard key={land.id} individualLand={land} setLand={setLand} landList={landList} />
             )}
         </div>
     )

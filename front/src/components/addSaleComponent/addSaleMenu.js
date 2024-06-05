@@ -17,6 +17,7 @@ export default function AddSaleMenu() {
         totalQuantity: "",
         producerId: 0,
         productId: 0,
+        base64Image: null,
     });
 
     useEffect(() => {
@@ -55,8 +56,21 @@ export default function AddSaleMenu() {
         }));
     };
 
+    const handleImageChange = (event) => {
+        if(event.target.files[0]){
+            const reader = new FileReader();
+            reader.onloadend = ()=>{
+                setData(prevData => ({
+                    ...prevData,
+                    base64Image: reader.result,
+                }));
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    };
+            // SA PUN VALIDARE DUPA
     const handleClick = () => {
-        const { announcementTitle, description, price, totalQuantity, productId } = data;
+        const { announcementTitle, description, price, totalQuantity, productId, base64Image} = data;
         let validationErrors = {};
         if (!announcementTitle) validationErrors.announcementTitle = "Titlul anunțului este obligatoriu.";
         if (!description) validationErrors.description = "Descrierea produsului este obligatorie.";
@@ -72,13 +86,28 @@ export default function AddSaleMenu() {
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/sale/createSale`, {
             method: "POST",
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        alert(`Anuntul pentru ${data.announcementTitle} a fost postat cu succes!`);
-        navigate('/homepage');
+                        'Accept': 'application/json',
+                        "Content-Type": "application/json",
+                    },
+            body: JSON.stringify(data),
+        }).then(response => response.json())
+            .then(data => {
+                alert(`Anuntul pentru ${data.announcementTitle} a fost postat cu succes!`);
+                navigate('/homepage');
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        //Varianta veche fara imagine
+        // fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/sale/createSale`, {
+        //     method: "POST",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(data)
+        // });
+        // alert(`Anuntul pentru ${data.announcementTitle} a fost postat cu succes!`);
+        // navigate('/homepage');
 
     }
 
@@ -87,7 +116,7 @@ export default function AddSaleMenu() {
             <h1>Posteaza un anunț!</h1>
             <TextField variant="outlined" label="Titlul anuntului" name="announcementTitle" value={data.announcementTitle} onChange={handleChange} error={!!errors.announcementTitle} helperText={errors.announcementTitle} />
             <TextField variant="outlined" label="Descrierea produsului" name="description" value={data.description} onChange={handleChange} error={!!errors.description} helperText={errors.description} />
-            <TextField variant="outlined" type="number" label="Pret" name="price" value={data.price} onChange={handleChange} error={!!errors.price} helperText={errors.price}/>
+            <TextField variant="outlined" type="number" label="Pret" name="price" value={data.price} onChange={handleChange} error={!!errors.price} helperText={errors.price} />
             <TextField variant="outlined" type="number" label="Cantitate" name="totalQuantity" value={data.totalQuantity} onChange={handleChange} error={!!errors.totalQuantity} helperText={errors.totalQuantity} />
             <Autocomplete
                 disablePortal
@@ -95,10 +124,11 @@ export default function AddSaleMenu() {
                 options={vegetableList}
                 onChange={handleVegetable}
                 sx={{ width: 200 }}
-                renderInput={(params) => <TextField {...params} label="Legume" 
-                error={!!errors.productId}
-                helperText={errors.productId}/>}
+                renderInput={(params) => <TextField {...params} label="Legume"
+                    error={!!errors.productId}
+                    helperText={errors.productId} />}
             />
+            <input type="file" onChange={handleImageChange} />
             <Button variant="contained" onClick={handleClick}>Posteaza anunțul!</Button>
         </div>
     )

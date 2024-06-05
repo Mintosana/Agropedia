@@ -1,6 +1,8 @@
 const express = require('express');
-const router = express.Router();
 const SaleController = require('../controllers').saleController;
+const upload = require('../middleware/index').upload;
+
+const router = express.Router();
 
 router.get("/getSaleById/:id",SaleController.getSaleById);
 router.get("/getAllSales",SaleController.getAllSales);

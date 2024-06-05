@@ -31,7 +31,7 @@ export default function ShopCard({saleInfo}){
             <Card sx={{ width: 300, height: 400 }}>
                 <CardMedia 
                     sx={{height:225, margin:"0 0 1rem 0", objectFit:"cover"}}
-                    image="/rosii.jpeg"
+                    image={saleInfo.imageData}
                     />
                 <CardContent>
                     <Typography variant="h5" component="div">

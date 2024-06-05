@@ -4,6 +4,7 @@ const {saleDb} = require('../models');
 const saleController = {
     createSale : async (req,res) =>{
         try{
+
             const saleData = {
                 price: req.body.price,
                 totalQuantity: req.body.totalQuantity,
@@ -11,7 +12,10 @@ const saleController = {
                 announcementTitle: req.body.announcementTitle,
                 producerId:req.body.producerId,
                 productId:req.body.productId,
+                imageData:req.body.base64Image,
             }
+
+            console.log(saleData);
     
             if(
                 !saleData.price || 
@@ -30,7 +34,7 @@ const saleController = {
         }
         catch(err){
             console.log(err);
-            res.status(500).send({message:"Eroare de la server!!"})
+            res.status(500).send({message:`Eroare de la server: ${err}`})
         } 
     },
 

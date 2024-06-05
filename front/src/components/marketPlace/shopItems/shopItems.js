@@ -11,6 +11,7 @@ export default function ShopItems() {
             return promise.json()
         })
         .then((res) =>{
+            console.log(res);
             setData(res);
         })
     },[])

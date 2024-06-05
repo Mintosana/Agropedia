@@ -22,7 +22,6 @@ export default function Homepage() {
                 .then((landData) => {
                     if (landData.status !== 401 && landData.status !== 404) {
                         setLand(landData);
-                        console.log(landData);
                     }
                 })
         }

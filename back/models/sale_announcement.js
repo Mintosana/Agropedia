@@ -23,6 +23,9 @@ module.exports = (db)=>{
         description:{
             type:DataTypes.STRING,
             allowNull: false,
+        },
+        imageData:{
+            type: DataTypes.TEXT,
         }
     },{
         tableName:"Sale_announcement",

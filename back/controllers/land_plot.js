@@ -47,6 +47,7 @@ const landController = {
                 name : req.body.name,
                 size: req.body.size,
                 landType: req.body.landType,
+                location: req.body.location,
                 producerId: req.body.producerId,
                 productId: req.body.productId,
             }

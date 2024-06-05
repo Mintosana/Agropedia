@@ -16,13 +16,9 @@ module.exports = (db) =>{
             type:DataTypes.FLOAT,
             allowNull:false,
         },
-        temperature:{
-            type:DataTypes.FLOAT,
-            allowNull:true,
-        },
-        humidity:{
-            type:DataTypes.FLOAT,
-            allowNull:true,
+        location:{
+            type:DataTypes.STRING,
+            allowNull:false,
         },
         landType:{
             type:DataTypes.STRING,

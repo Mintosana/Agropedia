@@ -37,7 +37,7 @@ export default function ItemDescription({ itemData, availableQuantity, id }) {
     return (
         <div className="mainComponent">
             <div className="imageComponent">
-                <img src='/rosii.jpeg' />
+                <img src={itemData.imageData} />
             </div>
             <div className="buyComponent">
                 <h1>{itemData.announcementTitle}</h1>
