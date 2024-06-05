@@ -1,13 +1,15 @@
-
-import Maps from '../components/maps/maps';
 import Headers from "../components/header/header"
-import Profile from '../components/shopItemDetails/profile';
-import Review from '../components/shopItemDetails/review';
-import ItemDescription from '../components/shopItemDetails/itemDescription';
+import Profile from '../components/shopItemDetails/profile/profile';
+import Review from '../components/shopItemDetails/review/review';
+import ItemDescription from '../components/shopItemDetails/itemDescription/itemDescription';
+import ReviewList from '../components/shopItemDetails/reviewList/reviewList';
+import MapComponent from "../components/maps/maps";
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+
 
 import './css/shopItemDetails.css';
-import { useState,useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import "leaflet/dist/leaflet.css";
 
 
 export default function ShopItemDetails() {
@@ -24,10 +26,22 @@ export default function ShopItemDetails() {
             })
     }, [])
 
+    //AICI AM LUCRU
+    const [reviewList,setReviewList] = useState([]);
+    useEffect(()=>{
+        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/review/getReviewsBySaleId/${id}`)
+            .then((promise) => {
+                return promise.json()
+            })
+            .then((response) => {
+                setReviewList(response);
+                console.log(response);
+            })
+    },[])
+
     useEffect(() => {
         if (itemData) {
             setAvailableQuantity(itemData.totalQuantity);
-            console.log(itemData)
         }
     }, [itemData]);
 
@@ -37,13 +51,14 @@ export default function ShopItemDetails() {
             <Headers></Headers>
             {itemData && (
                 <>
-                    <ItemDescription itemData={itemData} availableQuantity={availableQuantity} id={id}></ItemDescription>
-                    <Profile producerId = {itemData.producerId}></Profile>
-                    <Review></Review>
-                    
-                    {/* <div className='locationComponent'>
-                        <Maps></Maps>
-                    </div> */}
+                    <div className='orderComponent'>
+                        <ItemDescription itemData={itemData} availableQuantity={availableQuantity} id={id}></ItemDescription>
+                        <Profile producerId={itemData.producerId}></Profile>
+                        
+                    </div>
+                    {/* <MapComponent></MapComponent> */}
+                    <Review id={id} setReviewList={setReviewList} producerId={itemData.producerId}></Review>
+                    <ReviewList id={id} reviewList={reviewList}></ReviewList>
                 </>
             )}
         </>

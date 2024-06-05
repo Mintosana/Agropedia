@@ -72,7 +72,10 @@ const transactionController = {
             const sale = await saleDb.findAll({
                 where: {
                     producerId: producator.id,
-                }
+                },
+                order:[
+                    ['createdAt','DESC']
+                ],
             })
 
             const transactionPromises = sale.map(async (element) => {

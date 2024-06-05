@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button, TextField } from '@mui/material';
+import './itemDescription.css';
 
 export default function ItemDescription({ itemData, availableQuantity, id }) {
     const [quantity, setQuantity] = useState(0);

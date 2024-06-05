@@ -1,14 +1,14 @@
 import { Avatar } from '@mui/material';
 import { useState, useEffect } from 'react';
+import './profile.css'
 
 
 export default function Profile({ producerId }) {
-    const [producerData, setProducerData] = useState();
+    const [producerData, setProducerData] = useState({});
     useEffect(() => {
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/user/getUserByProducerId/${producerId}`)
             .then(res => res.json())
             .then(producerData => {
-                console.log(producerData)
                 setProducerData(producerData);
             })
     }, [])

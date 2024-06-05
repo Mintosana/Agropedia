@@ -1,0 +1,24 @@
+.reviewEntry{
+    border:1px solid black;
+    border-radius: 10px;
+    padding:1rem;
+
+    display:flex;
+    gap:3rem;
+}
+
+.userPart{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.userName{
+    text-align: center;
+    width: 8rem; 
+    white-space: normal; 
+    word-wrap: break-word; 
+    overflow: hidden; 
+
+}

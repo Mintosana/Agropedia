@@ -1,0 +1,50 @@
+.mainComponent{
+    display: flex;
+    background-color: white;
+    justify-content: space-between;
+    flex-grow: 2;
+    align-items: center;
+    height:30rem;
+    border-radius: 30px;
+    padding: 0 3rem 0 3rem;
+    gap:1rem;
+}
+
+.imageComponent{
+    height: 90%;
+    width: 60%;
+    position:relative;  
+}
+
+.imageComponent>img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius: 30px;
+}
+
+.buyComponent{
+    max-width: 50%;
+    height: 80%;
+}
+
+.itemDetails{
+    display:flex;
+    gap: 2rem;
+}
+
+.buyZone{
+    margin: 8rem 0 0 0;
+    display:flex;
+    gap:1rem;
+}
+
+.locationComponent{
+    margin: 3rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+

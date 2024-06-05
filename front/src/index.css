@@ -7,6 +7,8 @@ body {
   border-radius: 6px;
   background: rgb(27,217,133);
   background: linear-gradient(90deg, rgba(27,217,133,1) 0%, rgba(148,233,166,1) 100%);
+
+  /* overflow-x: hidden; */
 }
 
 

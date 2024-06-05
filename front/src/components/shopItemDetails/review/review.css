@@ -1,0 +1,14 @@
+.reviewSection{
+    background-color: white;
+    padding: 2rem;
+    border-radius: 30px;
+    width:93%;
+    margin: 0 auto;
+    
+    margin-top:2rem;
+}
+
+.reviewRateSection{
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,0 +1,16 @@
+.profileComponent{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    min-width:8rem;
+    width:30rem;
+    height: auto;
+    background-color: white;
+    border-radius: 30px;  
+}
+
+.userLogo{
+    width:10rem;
+    height: 10rem;
+}
