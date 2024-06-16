@@ -24,6 +24,9 @@ module.exports = (db) =>{
             type:DataTypes.STRING,
             allowNull:false,
         },
+        imageData:{
+            type: DataTypes.TEXT('medium'),
+        },
     },{
         tableName: "Land_plot",
         timestamps:true,

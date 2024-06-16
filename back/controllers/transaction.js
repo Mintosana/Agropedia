@@ -26,32 +26,20 @@ const transactionController = {
     },
     getAllTransactionsById: async (req, res) => {
         try {
-            const transactions = [];
             const userId = req.params.id;
-            const producator = await producerDb.findOne({
-                where: {
-                    userId: userId
-                }
+            const transactions = await transactionDb.findAll({
+                where:{
+                    userId : userId,
+                },
+                order:[
+                    ['createdAt','DESC']
+                ],
             })
-            const sale = await saleDb.findAll({
-                where: {
-                    producerId: producator.id,
-                }
-            })
-            const transactionPromises = sale.map(async (element) => {
-                const transaction = await transactionDb.findAll({
-                    where: {
-                        announcementId: element.id
-                    }
-                });
-                transactions.push(...transaction);
-            });
-            await Promise.all(transactionPromises);
-            if (transactions.length !== 0) {
+            if(transactions.length !== 0){
                 res.status(200).send(transactions);
             }
-            else {
-                res.status(204).send("Nu exista nici o tranzactie initiata la anunturile utilizatorului");
+            else{
+                res.status(404).send({message:"Acest utilizator nu a initiat nici o tranzactie!"});
             }
         }
         catch (err) {
@@ -99,7 +87,7 @@ const transactionController = {
         }
         catch (err) {
             console.log(err);
-            res.status(500).send({ message: "Eroare de la server!!" })
+            res.status(500).send({ message: `${err}`})
         }
     },
 

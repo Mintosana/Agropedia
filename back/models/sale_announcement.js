@@ -25,7 +25,7 @@ module.exports = (db)=>{
             allowNull: false,
         },
         imageData:{
-            type: DataTypes.TEXT,
+            type: DataTypes.TEXT('medium'),
         }
     },{
         tableName:"Sale_announcement",

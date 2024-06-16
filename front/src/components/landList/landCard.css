@@ -3,7 +3,7 @@
     border-radius: 30px;
     margin:1rem;
     display:flex;
-    width:50%;
+    width:45%;
     
 }
 
@@ -15,10 +15,23 @@
     width: 100%;
 }
 
-.cardImage{
-    width: 50%;
-    margin-top: 1rem;
+.imageData{
+display: "flex";
+flex-direction: column;
 }
+
+.imageData>h3{
+    text-align: center;
+}
+
+.cardImage {
+    width: 12rem; 
+    height: 12rem;
+    object-fit: cover;
+    margin-top : 1rem;
+    border-radius: 10px;
+}
+
 
 .plotElementsBox{
     display:flex;

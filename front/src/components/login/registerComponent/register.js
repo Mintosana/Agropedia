@@ -109,7 +109,11 @@ export default function Register({ loginState }) {
                 {/* <option value="Firma">Firma/Contractor</option> */}
             </select>
             </label>
+            <div>
             <button className="butonRegister" onClick={handleClick}>Inregistreaza-te</button>
+            <button className="butonLogin" onClick={() => loginState()}>Ai deja Cont?</button>
+            </div>
+            
         </div>
     );
 }

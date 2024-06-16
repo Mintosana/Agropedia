@@ -6,3 +6,12 @@
 }
 
 
+#imageInput{
+    display:none
+}
+
+.imageButton{
+    width:10rem;
+    height: 3rem;
+    margin:1rem;
+}

@@ -1,0 +1,9 @@
+.transactionComponent{
+    background-color: white;
+    max-width: 40%;
+    border-radius: 20px;
+    padding:1rem 1rem 1rem 1rem;
+    margin-left: 2rem;
+    margin-top:2rem
+}
+

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { styled } from '@mui/material/styles';
 import { Modal, Typography, Box, TextField, Button, Autocomplete } from '@mui/material';
 import './landList.css'
 
@@ -13,7 +15,8 @@ export default function LandList({ landList, setLand }) {
     const [location, setLocation] = useState('');
     const [vegetable, setVegetable] = useState('');
     const [vegetableList, setVegetableList] = useState([]);
-    const [metrics, setMetrics] = useState('m²')
+    const [metrics, setMetrics] = useState('m²');
+    const [image,setImage] = useState(null);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -22,6 +25,17 @@ export default function LandList({ landList, setLand }) {
     const plotType = ["Solar", "Sera", "Camp"];
     const plotMetrics = ['ar','m²','ha'];
 
+    const VisuallyHiddenInput = styled('input')({
+        clip: 'rect(0 0 0 0)',
+        clipPath: 'inset(50%)',
+        height: 1,
+        overflow: 'hidden',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        whiteSpace: 'nowrap',
+        width: 1,
+      });
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/product/getAllProducts`
@@ -49,6 +63,16 @@ export default function LandList({ landList, setLand }) {
         setVegetable(value);
     }
 
+    const handleImageChange = (event) => {
+        if(event.target.files[0]){
+            const reader = new FileReader();
+            reader.onloadend = ()=>{
+                setImage(reader.result);
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    };
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -74,7 +98,8 @@ export default function LandList({ landList, setLand }) {
             landType: type,
             location: location,
             producerId: producerId,
-            productId: (vegetableList.findIndex(v => v === vegetable) + 1)
+            productId: (vegetableList.findIndex(v => v === vegetable) + 1),
+            imageData : image,
         }
 
         const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/createLand`, {
@@ -96,7 +121,7 @@ export default function LandList({ landList, setLand }) {
     return (
         <div className='landList'>
             <h2>Lista Loturi de pamant</h2>
-            <button onClick={handleOpen}>Adauga lot de pamant</button>
+            <Button variant='contained' onClick={handleOpen}>Adauga lot de pamant</Button>
             <Modal
                 id="plotModal"
                 open={open}
@@ -127,12 +152,22 @@ export default function LandList({ landList, setLand }) {
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Legume" />}
                         />
+                         <input id="imageInput" type="file" onChange={handleImageChange} />
+                         <Button 
+                         className="imageButton"
+                         component="label" 
+                         variant="contained" 
+                         startIcon={<CloudUploadIcon/>}
+                         >
+                            Ataseaza Poza
+                            <VisuallyHiddenInput type="file" onChange={handleImageChange}/>
+                        </Button>
                         <Button variant="contained" sx={{ margin: "1rem" }} onClick={handleClick}>Creaza lot de pământ</Button>
                     </Box>
                 </Box>
             </Modal>
             {landList.map((land) =>
-                <LandCard key={land.id} individualLand={land} setLand={setLand} landList={landList} />
+                <LandCard key={land.id} individualLand={land} setLand={setLand} landList={landList} vegetableList={vegetableList} />
             )}
         </div>
     )

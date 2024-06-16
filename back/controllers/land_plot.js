@@ -50,6 +50,7 @@ const landController = {
                 location: req.body.location,
                 producerId: req.body.producerId,
                 productId: req.body.productId,
+                imageData: req.body.imageData,
             }
             console.log(plot);
             assignedProducer = await producerDb.findAll({
@@ -94,12 +95,14 @@ const landController = {
         else {
             try {
                 const newPlot = {
+                    name: req.body.name,
                     size: req.body.size,
                     landType: req.body.landType,
+                    location:req.body.location,
                     producerId: req.body.producerId,
                     productId: req.body.productId,
+                    imageData:req.body.imageData,
                 }
-
                 assignedProducer = await producerDb.findAll({
                     where: {
                         id: newPlot.producerId,

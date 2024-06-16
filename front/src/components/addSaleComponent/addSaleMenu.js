@@ -97,18 +97,6 @@ export default function AddSaleMenu() {
             }).catch(error => {
                 console.error('Error:', error);
             });
-        //Varianta veche fara imagine
-        // fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/sale/createSale`, {
-        //     method: "POST",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(data)
-        // });
-        // alert(`Anuntul pentru ${data.announcementTitle} a fost postat cu succes!`);
-        // navigate('/homepage');
-
     }
 
     return (

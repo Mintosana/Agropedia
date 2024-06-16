@@ -1,0 +1,8 @@
+.mainContainer{
+    /* style={{display:'flex', flexDirection:'row-reverse'} */
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content:center;
+    gap:10rem;
+}
