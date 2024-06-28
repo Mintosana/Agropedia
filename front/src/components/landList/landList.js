@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
-import { Modal, Typography, Box, TextField, Button, Autocomplete } from '@mui/material';
+import {  Snackbar, Alert, Modal, Typography, Box, TextField, Button, Autocomplete } from '@mui/material';
 import './landList.css'
 
 import { useState, useEffect } from 'react';
@@ -21,6 +21,17 @@ export default function LandList({ landList, setLand }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [deleteEditPopup, setDeleteEditPopup] = useState(false);
+    const [openEditModal, setOpenEditModal] = useState(false);
+
+    const handleCloseEditModal = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setDeleteEditPopup(false);
+        setOpenEditModal(false);
+    }
 
     const plotType = ["Solar", "Sera", "Camp"];
     const plotMetrics = ['ar','m²','ha'];
@@ -166,9 +177,22 @@ export default function LandList({ landList, setLand }) {
                     </Box>
                 </Box>
             </Modal>
+            <Snackbar
+                open={deleteEditPopup}
+                autoHideDuration={6000}
+                onClose={handleCloseEditModal}
+            >
+                <Alert onClose={handleCloseEditModal} severity="success" sx={{ width: '100%' }}>
+                    Lotul de pamant a fost sters!
+                </Alert>
+            </Snackbar>
             {landList.map((land) =>
-                <LandCard key={land.id} individualLand={land} setLand={setLand} landList={landList} vegetableList={vegetableList} />
-            )}
+            {
+                // console.log(land);
+                return <LandCard key={land.id} individualLand={land} setLand={setLand} landList={landList} vegetableList={vegetableList} open={openEditModal} setOpen={setOpenEditModal} handleClose={handleCloseEditModal} setDeletePopup={setDeleteEditPopup} />
+          
+            }
+                  )}
         </div>
     )
 }

@@ -8,6 +8,7 @@ const MapComponent = ({Lat= 51.505,Long = -0.09,Heigth = 200, Width = 400}) => {
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   });
+  console.log(Lat,Long)
 
   return (
     <MapContainer center={[Lat, Long]} zoom={13} style={{ height: `${Heigth}px`, width: `${Width}px`, borderRadius: "20px", margin: "25px" }}>

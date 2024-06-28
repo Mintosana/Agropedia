@@ -1,0 +1,9 @@
+.contractListContainer {
+    background-color: white;
+    max-width: 40rem;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 25px;
+    overflow-y: auto; 
+    min-height: 40vh;
+}

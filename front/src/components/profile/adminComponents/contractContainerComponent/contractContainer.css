@@ -1,0 +1,68 @@
+.contractCard {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.usernameTitle {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.contractInfo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.infoColumn {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.infoItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.infoItem svg {
+    margin-right: 0.5rem;
+}
+
+.actionColumn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.actionButton {
+    margin-bottom: 0.5rem;
+    color: black; /* Set the icon color to black */
+}
+
+.noRequestsMessage {
+    text-align: center;
+    font-size: 1.25rem;
+    color: #555;
+    padding: 2rem;
+    border: 1px dashed #ddd;
+    border-radius: 10px;
+    margin: 2rem auto;
+    width: 80%;
+}

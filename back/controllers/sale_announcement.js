@@ -13,10 +13,7 @@ const saleController = {
                 producerId:req.body.producerId,
                 productId:req.body.productId,
                 imageData:req.body.base64Image,
-            }
-
-            console.log(saleData);
-    
+            } 
             if(
                 !saleData.price || 
                 !saleData.totalQuantity || 

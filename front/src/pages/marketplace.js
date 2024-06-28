@@ -3,6 +3,7 @@ import ShopItems from "../components/marketPlace/shopItems/shopItems";
 import FilterMenu from "../components/marketPlace/menu/filterMenu";
 import { Box } from "@mui/material";
 import './css/marketplace.css';
+import TicketButton from "../components/ticketButton/ticketButton";
 
 export default function Marketplace() {
 
@@ -13,6 +14,7 @@ export default function Marketplace() {
                 <FilterMenu />
                 <ShopItems />
             </Box>
+            <TicketButton></TicketButton>
         </>
     )
 }

@@ -107,18 +107,19 @@ const transactionController = {
                             id: transactionId,
                         },
                     },
-                ); // total = 1000 , transaction = 200
+                );
                 const sale = await saleDb.findOne({
                     where:{
                         id : transaction.announcementId,
                 }})
                 if(sale.totalQuantity - transaction.quantity >= 0){
-                    await saleDb.increment({ totalQuantity: -transaction.quantity}, {where: {id: transaction.announcementId}});
+                    await saleDb.increment(
+                        { totalQuantity: -transaction.quantity},
+                        {where: {id: transaction.announcementId}});
                     res.status(200).send(`Tranzactia cu id-ul ${transactionId} a fost acceptata`);
                 }
                 else{
                     res.status(400).send("Nu se poate rezolva tranzactia, cantitatea este epuizata!");
-                    //return;
                 }    
             }
             else{

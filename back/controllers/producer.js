@@ -1,4 +1,4 @@
-const { producerDb } = require("../models");
+const { producerDb, userDb } = require("../models");
 
 const producerController = {
     getProducerByUserId: async (req,res) => {
@@ -41,6 +41,25 @@ const producerController = {
         }
         catch(err){
             res.status(500).send({message: "Eroare de la server!"})
+        }
+    },
+
+    getAllProducers: async (req, res) => {
+        try {
+            const producers = await producerDb.findAll();
+            const users = await userDb.findAll();
+            console.log(users);
+            const producerList = producers.map((producer) => {
+                const desiredUser = users.find((user) => user.id == producer.id);
+                const data = {
+                    id: producer.id,
+                    name: desiredUser.name
+                }
+                return data;
+            });
+            res.status(200).send(producerList);
+        } catch (err) {
+            res.status(500).send({ message: "Eroare de la server!" });
         }
     },
 }

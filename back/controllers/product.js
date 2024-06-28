@@ -1,4 +1,4 @@
-const {productDb} = require("../models/index");
+const {productDb, saleDb} = require("../models/index");
 
 const productController = {
     createProduct: async(req,res)=>{
@@ -55,7 +55,34 @@ const productController = {
         }
         catch(err){
             console.log(err);
-            res.status(500).send({message:"Eroare de la server!!"})
+            res.status(500).send({message:"Eroare de la server!!"});
+        }
+    },
+
+    getProductQuantityFromSales: async(req,res) => {
+        try{
+            let productNameArray = new Array();
+            allProducts = await productDb.findAll({attributes: ['productName']});
+            allProducts.forEach((product)=>{
+                productNameArray.push(product.productName);
+            })
+
+            productQuantity = new Map();
+            totalSales = await saleDb.findAll();
+            totalSales.forEach((sale) => {
+                if(productQuantity.has(productNameArray[sale.productId - 1])){
+                    productQuantity.set(productNameArray[sale.productId - 1], productQuantity.get(productNameArray[sale.productId - 1]) + sale.totalQuantity);
+                }
+                else{
+                    productQuantity.set(productNameArray[sale.productId - 1],sale.totalQuantity)
+                }
+                
+            })
+            res.status(200).send(Object.fromEntries(productQuantity));
+        }
+        catch(err){
+            console.log(err);
+            res.status(500).send({message: err});
         }
     }
 }

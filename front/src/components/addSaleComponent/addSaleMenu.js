@@ -68,7 +68,6 @@ export default function AddSaleMenu() {
             reader.readAsDataURL(event.target.files[0]);
         }
     };
-            // SA PUN VALIDARE DUPA
     const handleClick = () => {
         const { announcementTitle, description, price, totalQuantity, productId, base64Image} = data;
         let validationErrors = {};
@@ -116,7 +115,22 @@ export default function AddSaleMenu() {
                     error={!!errors.productId}
                     helperText={errors.productId} />}
             />
-            <input type="file" onChange={handleImageChange} />
+            <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="file-input"
+                onChange={handleImageChange}
+            />
+            <label htmlFor="file-input">
+                <Button
+                    variant="contained"
+                    component="span"
+                    sx={{ marginTop: '16px', marginBottom: '16px' }}
+                >
+                    Atașează o poză
+                </Button>
+            </label>
             <Button variant="contained" onClick={handleClick}>Posteaza anunțul!</Button>
         </div>
     )

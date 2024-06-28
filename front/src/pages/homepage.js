@@ -2,7 +2,15 @@ import Header from '../components/header/header';
 import LandList from '../components/landList/landList';
 
 import { useState, useEffect } from 'react';
+import StatisticsComponent from '../components/statistics/adminPage/statisticsComponent/statisticsComponent';
+import TicketButton from '../components/ticketButton/ticketButton';
+import TicketList from '../components/profile/adminComponents/ticketListComponent/ticketList';
+import UploadDocument from '../components/companyComponents/uploadDocument/uploadDocument';
+import ContractList from '../components/profile/adminComponents/contractListComponent/contractList';
+import AdminContractList from "../components/companyComponents/contractList/contractList";
+import CompanyStatisticsComponent from '../components/companyComponents/companyStatisticsComponent/companyStatistics';
 
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export default function Homepage() {
     const [land, setLand] = useState([]);
@@ -31,8 +39,45 @@ export default function Homepage() {
     return (
         <>
             <Header></Header>
-            {userType === "Producator" && land && <LandList landList={land} setLand={setLand} />}
-            {userType === "Client" && <h3>Salutare! Doresti sa cumperi ceva? acceseaza marketplace-ul</h3>}
+            {userType === "Producator" && land &&
+                <>
+                    <LandList landList={land} setLand={setLand} />
+                    <TicketButton></TicketButton>
+                </>
+            }
+            {userType === "Client" &&
+                <>
+                    <h3>Salutare! Doresti sa cumperi ceva? acceseaza marketplace-ul</h3>
+                    <UploadDocument></UploadDocument>
+                    <TicketButton></TicketButton>
+                </>
+            }
+            {userType === "Companie" &&
+                <>
+                    <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', justifyContent: 'center', alignItems: 'center' }}>
+                        <CompanyStatisticsComponent></CompanyStatisticsComponent>
+                        <AdminContractList></AdminContractList>
+                    </div>
+
+                    <TicketButton></TicketButton>
+                </>
+            }
+            {userType === "Admin" && (
+                <>
+                    {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
+                        <DashboardIcon fontSize='large'></DashboardIcon>
+                        <h1>Dashboard Admin</h1>
+                    </div> */}
+                    <div style={{ height: '400px', display: 'flex', justifyContent: "space-evenly" }}>
+                        <div style={{ display: 'flex', flexDirection: "column" }}>
+                            <StatisticsComponent></StatisticsComponent>
+                            <ContractList></ContractList>
+                        </div>
+                        <TicketList></TicketList>
+                    </div>
+                </>
+
+            )}
         </>
     )
 }

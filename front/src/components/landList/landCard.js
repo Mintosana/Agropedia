@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Snackbar, Alert, Modal, Box, Typography,TextField,Autocomplete,Button } from '@mui/material';
+import {Modal, Box, Typography, TextField, Autocomplete, Button } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
@@ -8,8 +8,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './landCard.css'
 
 
-export default function LandCard({ individualLand, setLand, landList, vegetableList}) {
-    const [open, setOpen] = useState(false);
+export default function LandCard({ individualLand, setLand, landList, vegetableList, open, setOpen, handleClose, setDeletePopup }) {
     const [productName, setProductName] = useState(vegetableList[individualLand.productId - 1]);
     const [humidity, setHumidity] = useState(0);
     const [temperature, setTemperature] = useState(0);
@@ -19,23 +18,23 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
     const [name, setName] = useState(individualLand.name);
     const [size, setSize] = useState(individualLand.size);
     const [type, setType] = useState(individualLand.landType);
-    const [metrics, setMetrics] = useState(plotMetrics[plotType.findIndex(metric => metric ===individualLand.landType)]); 
+    const [metrics, setMetrics] = useState(plotMetrics[plotType.findIndex(metric => metric === individualLand.landType)]);
     const [location, setLocation] = useState(individualLand.location);
     const [vegetable, setVegetable] = useState(vegetableList[individualLand.productId - 1]);
-    const [image,setImage] = useState(individualLand.imageData);
+    const [image, setImage] = useState(individualLand.imageData);
 
     const landData = {
+        id: individualLand.id,
         name: name,
         size: size,
         landType: type,
         location: location,
         producerId: individualLand.producerId,
         productId: (vegetableList.findIndex(v => v === vegetable) + 1),
-        imageData : image,
+        imageData: image,
     }
 
     useEffect(() => {
-        console.log(landData.location);
         fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${landData.location}&limit=1&appid=${process.env.REACT_APP_WEATHER_API}`)
             .then(res => res.json())
             .then(res => {
@@ -58,8 +57,8 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
         left: 0,
         whiteSpace: 'nowrap',
         width: 1,
-      });
-      const style = {
+    });
+    const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -86,21 +85,17 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
     const handleVegetable = (event, value) => {
         setVegetable(value);
     }
-
     const handleImageChange = (event) => {
-        if(event.target.files[0]){
+        if (event.target.files[0]) {
             const reader = new FileReader();
-            reader.onloadend = ()=>{
+            reader.onloadend = () => {
                 setImage(reader.result);
             }
             reader.readAsDataURL(event.target.files[0]);
         }
     };
-
-
     const handleDeleteClick = (id) => {
-        setOpen(true);
-        console.log(open);
+        setDeletePopup(true);
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/deletePlotById/${id}`,
             {
                 method: 'DELETE',
@@ -108,45 +103,33 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
                     'Content-Type': 'application/json'
                 }
             })
-            .then((res) => {
-                console.log(landList);
+            .then(() => {
                 setLand(landList.filter((land) => land.id !== individualLand.id));
-                return res;
             })
-            .then((consumedRes) => {
-               // alert(`Lotul de pamant cu numele ${individualLand.name} a fost sters cu succes!`)
-               //Nu stiu de ce snackbar-ul se afiseaza doar cand am acest alert
-            }).catch(error => {
+            .catch(error => {
                 console.error("Eroare la stergerea lotului de pamant:", error);
             })
     }
-
     const handleClick = async () => {
-        const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/updatePlotById/${individualLand.id}`,{
-            method:"PUT",
-            headers:{
-                "Content-Type":"application/json",
+        console.log("ID-ul pamantului notificat este " + individualLand.id);
+        const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/updatePlotById/${individualLand.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(landData),
         })
-        
-        const consumedResponse = await response.json();
-        setLand(landList.map(land => 
-            land.id === consumedResponse.id ? consumedResponse : land
-        ));
+        if (response.ok) {
+            setLand(landList.map(land =>
+                land.id === individualLand.id ? landData : land
+            ));
+        }
+
         handleClose();
     }
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpen(false);
-    }
-
     const handleEditClick = async () => {
+        console.log(individualLand.id);
         setOpen(true);
-        // alert("Inca nu pot edita")  
     }
 
     return (
@@ -167,15 +150,6 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
                     <IconButton onClick={() => handleDeleteClick(individualLand.id)}>
                         <Delete />
                     </IconButton>
-                    {/* <Snackbar
-                        open={open}
-                        autoHideDuration={6000}
-                        onClose={handleClose}
-                    >
-                        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                            Lotul de pamant cu id-ul {individualLand.id} a fost sters!
-                        </Alert>
-                    </Snackbar> */}
                     <IconButton onClick={handleEditClick}>
                         <Edit />
                     </IconButton>
@@ -213,15 +187,15 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Legume" />}
                         />
-                         <input id="imageInput" type="file" onChange={handleImageChange} />
-                         <Button 
-                         className="imageButton"
-                         component="label" 
-                         variant="contained" 
-                         startIcon={<CloudUploadIcon/>}
-                         >
+                        <input id="imageInput" type="file" onChange={handleImageChange} />
+                        <Button
+                            className="imageButton"
+                            component="label"
+                            variant="contained"
+                            startIcon={<CloudUploadIcon />}
+                        >
                             Ataseaza Poza
-                            <VisuallyHiddenInput type="file" onChange={handleImageChange}/>
+                            <VisuallyHiddenInput type="file" onChange={handleImageChange} />
                         </Button>
                         <Button variant="contained" sx={{ margin: "1rem" }} onClick={handleClick}>Editeaza lot de pământ</Button>
                     </Box>

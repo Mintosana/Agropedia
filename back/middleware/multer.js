@@ -2,7 +2,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const uploadDirectory = path.resolve(__dirname, '../documents/saleImages/');
+const uploadDirectory = path.resolve(__dirname, '../documents/companyDocuments/');
 console.log(`Upload directory resolved to: ${uploadDirectory}`);
 if (!fs.existsSync(uploadDirectory)) {
     console.log('Upload directory does not exist, creating...');
@@ -13,11 +13,14 @@ if (!fs.existsSync(uploadDirectory)) {
 }
 
 const storage = multer.diskStorage({
+
     destination: (req, file, cb) => {
         cb(null, uploadDirectory);
     },
     filename: (req, file, cb) => {
-        cb(null, `${file.originalname}`);
+        const id = req.params.id;
+        const fileExtension = path.extname(file.originalname);
+        cb(null, `DocumentUtilizator_${id}${fileExtension}`);
     }
 });
 

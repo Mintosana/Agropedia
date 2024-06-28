@@ -7,6 +7,8 @@ import TransactionClientCard from "../components/profile/clientComponents/transa
 import "./css/profile.css";
 
 import { useState, useEffect } from 'react';
+import ContractList from "../components/profile/producerComponents/contractList/contractList";
+import TicketButton from "../components/ticketButton/ticketButton";
 
 export default function Profile() {
     const [transactions, setTransactions] = useState([]);
@@ -57,6 +59,7 @@ export default function Profile() {
         switch (localStorage.getItem("type")) {
             case "Producator": {
                 setUniqueProfileComponent(
+                    <div style={{display:'flex', flexDirection:'column',justifyContent:'space-around', alignItems:'center', gap:'2rem'}}>
                     <TransactionList>
                         {transactions.map(transaction => (
                             <TransactionCard
@@ -66,6 +69,8 @@ export default function Profile() {
                             />
                         ))}
                     </TransactionList>
+                    <ContractList></ContractList>
+                    </div>
                 );
                 break;
             }
@@ -96,7 +101,7 @@ export default function Profile() {
                 {userData && <ProfileComponent userData={userData} />}
                 {uniqueProfileComponent}
             </div>
-
+            <TicketButton></TicketButton>
         </>
     )
 }

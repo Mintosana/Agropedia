@@ -8,6 +8,7 @@
     border-radius: 30px;
     padding: 0 3rem 0 3rem;
     gap:1rem;
+    max-width:70rem;
 }
 
 .imageComponent{

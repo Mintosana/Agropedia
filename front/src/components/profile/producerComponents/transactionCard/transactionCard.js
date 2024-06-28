@@ -48,9 +48,10 @@ export default function TransactionCard({transactionData,setModified}){
         <div className="transactionData">
         <p><b>Nume client</b>: {clientData.name} <br/>
         <b>Nr Telefon</b>: {clientData.phoneNumber} <br/>
-        <b>Data cerere</b>: {date} <br/>
+        <b>Produs:</b> : {saleData.announcementTitle} <br/>
         <b>Cantitate Ceruta</b>: {transactionData.quantity} kg <br/>
-        <b>Pret</b>: {saleData.price}</p>
+        <b>Pret</b>: {saleData.price} RON/kg</p>
+        <b>Data cerere</b>: {date} <br/>
         </div>
         <div className="transactionButtons">
             <IconButton onClick={handleCheck}>

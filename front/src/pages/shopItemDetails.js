@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom'
 
 import './css/shopItemDetails.css';
 import "leaflet/dist/leaflet.css";
+import TicketButton from "../components/ticketButton/ticketButton";
 
 
 export default function ShopItemDetails() {
@@ -26,7 +27,6 @@ export default function ShopItemDetails() {
             })
     }, [])
 
-    //AICI AM LUCRU
     const [reviewList,setReviewList] = useState([]);
     useEffect(()=>{
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/review/getReviewsBySaleId/${id}`)
@@ -56,11 +56,11 @@ export default function ShopItemDetails() {
                         <Profile producerId={itemData.producerId}></Profile>
                         
                     </div>
-                    {/* <MapComponent></MapComponent> */}
                     <Review id={id} setReviewList={setReviewList} producerId={itemData.producerId}></Review>
                     <ReviewList id={id} reviewList={reviewList}></ReviewList>
                 </>
             )}
+            <TicketButton></TicketButton>
         </>
     )
 }

@@ -1,4 +1,4 @@
-const { userDb, producerDb, clientDb } = require('../models');
+const { userDb, producerDb, clientDb, companyDb } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -180,6 +180,39 @@ const userController = {
         }
     },
 
+    getUserByCompanyId: async(req,res) =>{
+        const companyId = req.params.id;
+        try{
+            const companyData = await companyDb.findOne({
+                where:{
+                    id: companyId
+                }
+            })
+            if(companyData !== null){
+                const userData = await userDb.findOne({
+                    where:{
+                        id: companyData.userId,
+                    }
+                })
+                if(userData === null){
+                    res.status(404).send("Utilizatorul cu acest id nu exista!")
+                }
+                else{
+                    res.status(200).send(userData);
+                }
+            }
+            else{
+                res.status(404).send("Compania cu acest id nu exista!")
+            }
+           
+        
+        }
+        catch(error){
+            console.log(error);
+            res.status(500).send({ message: "Eroare de la server!" })
+        }
+    },
+
     updateUserById: async (req, res) => {
         const userId = req.params.id;
         const targetUser = await userDb.findByPk(userId);
@@ -234,7 +267,56 @@ const userController = {
             console.log(error);
             res.status(500).send({ message: "Eroare de la server!" })
         }
-    }
+    },
+
+    updateUserToCompany: async (req, res) => {
+        const userId = req.params.id;
+
+        try {
+            const targetUser = await userDb.findByPk(userId);
+            if (targetUser === null) {
+                res.status(404).send({ message: "Utilizatorul nu există" });
+                return;
+            }
+            if (targetUser.userType === 'Companie') {
+                res.status(400).send({ message: "Utilizatorul este deja de tip 'Companie'" });
+                return;
+            }
+            await userDb.update({ userType: 'Companie' }, {
+                where: { id: userId }
+            });
+
+            res.status(200).send({ message: "Utilizatorul a devenit de tipul Companie!" });
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({ message: "Eroare de la server!" });
+        }
+    },
+
+    sendCompanyDocuments: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const file = req.file;
+
+            if (!file) {
+                return res.status(400).send({ message: "No file uploaded" });
+            }
+
+            // Create a new entry in the Company table
+            const newCompanyEntry = {
+                userId: userId,
+                documentName:  `DocumentUtilizator_${userId}`,
+                isDocumentValidated: false
+            };
+
+            await companyDb.create(newCompanyEntry);
+
+            res.status(200).send({ message: "Company document uploaded and entry created successfully" });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
+    },
 }
 
 module.exports = userController;
