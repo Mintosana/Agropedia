@@ -56,10 +56,10 @@ const userController = {
                         }
                         await clientDb.create(clientUser);
                     }
-                    const jwtToken = jwt.sign({id: createdUser.id},process.env.JWT_SECRET,{
-                            expiresIn: process.env.JWT_EXPIRE_TIME
-                        })
-                    res.cookie("jwtToken", jwtToken , {httpOnly:true ,maxAge : process.env.COOKIE_EXPIRE_TIME});
+                    const jwtToken = jwt.sign({ id: createdUser.id }, process.env.JWT_SECRET, {
+                        expiresIn: process.env.JWT_EXPIRE_TIME
+                    })
+                    res.cookie("jwtToken", jwtToken, { httpOnly: true, maxAge: process.env.COOKIE_EXPIRE_TIME });
                     res.status(200).send(createdUser);
                 }
                 else {
@@ -90,29 +90,31 @@ const userController = {
                         email: userCredentials.email,
                     }
                 })
-                const passwordValidation = await bcrypt.compare(
-                    userCredentials.password,
-                    storedUser.password
-                )
+                if (storedUser) {
+                    const passwordValidation = await bcrypt.compare(
+                        userCredentials.password,
+                        storedUser.password
+                    )
 
-                if (!storedUser) {
+                    if (passwordValidation) {
+                        const jwtToken = jwt.sign({ id: storedUser.id }, process.env.JWT_SECRET, {
+                            expiresIn: process.env.JWT_EXPIRE_TIME
+                        })
+                        res.status(200).send({
+                            message: "Userul se poate loga!",
+                            token: jwtToken,
+                            id: storedUser.id,
+                            type: storedUser.userType
+                        });
+                    }
+                    else {
+                        res.status(400).send({ message: "Email sau parola gresita!" })
+                    }
+                }
+                else {
                     res.status(400).send({ message: "Utilizatorul specificat in credentiale nu exista!" })
                 }
-                else if (!passwordValidation) {
-                    res.status(400).send({ message: "Email sau parola gresita!" })
-
-                } else {
-                    const jwtToken = jwt.sign({id: storedUser.id},process.env.JWT_SECRET,{
-                        expiresIn: process.env.JWT_EXPIRE_TIME
-                    })
-                    res.status(200).send({ 
-                        message: "Userul se poate loga!",
-                        token : jwtToken, 
-                        id: storedUser.id, 
-                        type: storedUser.userType});
-                }
             }
-
         } catch (error) {
             console.log(error)
             res.status(500).send({ message: "Eroare de la server!" });
@@ -147,67 +149,67 @@ const userController = {
         }
     },
 
-    getUserByProducerId: async(req,res) =>{
+    getUserByProducerId: async (req, res) => {
         const producerId = req.params.id;
-        try{
+        try {
             const producerData = await producerDb.findOne({
-                where:{
+                where: {
                     id: producerId
                 }
             })
-            if(producerData !== null){
+            if (producerData !== null) {
                 const userData = await userDb.findOne({
-                    where:{
+                    where: {
                         id: producerData.userId,
                     }
                 })
-                if(userData === null){
+                if (userData === null) {
                     res.status(404).send("Utilizatorul cu acest id nu exista!")
                 }
-                else{
+                else {
                     res.status(200).send(userData);
                 }
             }
-            else{
+            else {
                 res.status(404).send("Producatorul cu acest id nu exista!")
             }
-           
-        
+
+
         }
-        catch(error){
+        catch (error) {
             console.log(error);
             res.status(500).send({ message: "Eroare de la server!" })
         }
     },
 
-    getUserByCompanyId: async(req,res) =>{
+    getUserByCompanyId: async (req, res) => {
         const companyId = req.params.id;
-        try{
+        try {
             const companyData = await companyDb.findOne({
-                where:{
+                where: {
                     id: companyId
                 }
             })
-            if(companyData !== null){
+            if (companyData !== null) {
                 const userData = await userDb.findOne({
-                    where:{
+                    where: {
                         id: companyData.userId,
                     }
                 })
-                if(userData === null){
+                if (userData === null) {
                     res.status(404).send("Utilizatorul cu acest id nu exista!")
                 }
-                else{
+                else {
                     res.status(200).send(userData);
                 }
             }
-            else{
+            else {
                 res.status(404).send("Compania cu acest id nu exista!")
             }
-           
-        
+
+
         }
-        catch(error){
+        catch (error) {
             console.log(error);
             res.status(500).send({ message: "Eroare de la server!" })
         }
@@ -305,7 +307,7 @@ const userController = {
             // Create a new entry in the Company table
             const newCompanyEntry = {
                 userId: userId,
-                documentName:  `DocumentUtilizator_${userId}`,
+                documentName: `DocumentUtilizator_${userId}`,
                 isDocumentValidated: false
             };
 

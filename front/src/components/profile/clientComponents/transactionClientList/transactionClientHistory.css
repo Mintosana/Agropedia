@@ -1,9 +1,28 @@
-.transactionComponent{
+.transactionComponent {
     background-color: white;
-    max-width: 40%;
     border-radius: 20px;
-    padding:1rem 1rem 1rem 1rem;
+    padding: 1rem;
     margin-left: 2rem;
-    margin-top:2rem
+    margin-top: 2rem;
+    max-height: 40rem;
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
+.transactionComponent::-webkit-scrollbar {
+    width: 12px;
+}
+
+.transactionComponent::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.transactionComponent::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.transactionComponent::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -12,11 +12,11 @@ export default function ItemDescription({ itemData, availableQuantity, id }) {
         if (quantity > availableQuantity) {
             alert('Comanda depaseste cantitatea totala de produs! introdu alta valoare.')
         }
-        else if (quantity == 0) {
-            alert('Nu poti face o comanda de 0kg, introdu o alta valoare');
+        else if (quantity <= 0) {
+            alert('Nu poti face o comanda cu cantitate negativa sau 0, introdu o alta valoare');
         }
         else {
-            alert(`Comanda ta de ${quantity} kg a fost trimisa catre producator`);
+            alert(`Comanda ta de ${quantity} kg a fost trimisa catre producator. Producătorul va urma să vă contacteze`);
             const data = {
                 quantity: quantity,
                 userId: localStorage.getItem('userId'),

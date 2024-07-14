@@ -20,7 +20,6 @@ const contractController = {
             doc.fontSize(25).text('Contract de Vanzare-Cumparare', { align: 'center' });
             doc.moveDown(1);
 
-            // ... Mai multă generare a documentului PDF
             doc.fontSize(14).text(`Incheiat intre:`, { align: 'left' });
             doc.moveDown(1);
             doc.text(`S.C. ${firmName} cu sediul la adresa ${firmAddress}. tel./fax ${firmPhone} CF ${firmCF} RC ${firmRC} cont nr. ${firmBankAccount} deschis la Banca ${firmBankName}, denumita in prezentul contract VANZATOR si`, { align: 'left' });

@@ -31,7 +31,6 @@ export default function Login({ loginState }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
-
         const consumedResponse = await responsePromise.json();
         
         
@@ -41,10 +40,15 @@ export default function Login({ loginState }) {
 
 
       if (responsePromise.ok) {
-        navigate(`/homepage`);
+        if(consumedResponse.type === "Client"){
+          navigate('/marketplace');
+        }
+        else{
+          navigate(`/homepage`);
+        }
+        
       }
       else {
-        const consumedResponse = await  responsePromise.json()
         alert(consumedResponse.message);
       }
     }

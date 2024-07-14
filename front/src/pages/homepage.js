@@ -10,8 +10,6 @@ import ContractList from '../components/profile/adminComponents/contractListComp
 import AdminContractList from "../components/companyComponents/contractList/contractList";
 import CompanyStatisticsComponent from '../components/companyComponents/companyStatisticsComponent/companyStatistics';
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
-
 export default function Homepage() {
     const [land, setLand] = useState([]);
     const [userType, setUserType] = useState(localStorage.getItem("type"))

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
-import {  Snackbar, Alert, Modal, Typography, Box, TextField, Button, Autocomplete } from '@mui/material';
+import { Snackbar, Alert, Modal, Typography, Box, TextField, Button, Autocomplete } from '@mui/material';
 import './landList.css'
 
 import { useState, useEffect } from 'react';
@@ -16,7 +16,7 @@ export default function LandList({ landList, setLand }) {
     const [vegetable, setVegetable] = useState('');
     const [vegetableList, setVegetableList] = useState([]);
     const [metrics, setMetrics] = useState('m²');
-    const [image,setImage] = useState(null);
+    const [image, setImage] = useState(null);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -34,7 +34,7 @@ export default function LandList({ landList, setLand }) {
     }
 
     const plotType = ["Solar", "Sera", "Camp"];
-    const plotMetrics = ['ar','m²','ha'];
+    const plotMetrics = ['ar', 'm²', 'ha'];
 
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -46,7 +46,7 @@ export default function LandList({ landList, setLand }) {
         left: 0,
         whiteSpace: 'nowrap',
         width: 1,
-      });
+    });
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/product/getAllProducts`
@@ -75,9 +75,9 @@ export default function LandList({ landList, setLand }) {
     }
 
     const handleImageChange = (event) => {
-        if(event.target.files[0]){
+        if (event.target.files[0]) {
             const reader = new FileReader();
-            reader.onloadend = ()=>{
+            reader.onloadend = () => {
                 setImage(reader.result);
             }
             reader.readAsDataURL(event.target.files[0]);
@@ -110,7 +110,7 @@ export default function LandList({ landList, setLand }) {
             location: location,
             producerId: producerId,
             productId: (vegetableList.findIndex(v => v === vegetable) + 1),
-            imageData : image,
+            imageData: image,
         }
 
         const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/createLand`, {
@@ -163,15 +163,15 @@ export default function LandList({ landList, setLand }) {
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Legume" />}
                         />
-                         <input id="imageInput" type="file" onChange={handleImageChange} />
-                         <Button 
-                         className="imageButton"
-                         component="label" 
-                         variant="contained" 
-                         startIcon={<CloudUploadIcon/>}
-                         >
+                        <input id="imageInput" type="file" onChange={handleImageChange} />
+                        <Button
+                            className="imageButton"
+                            component="label"
+                            variant="contained"
+                            startIcon={<CloudUploadIcon />}
+                        >
                             Ataseaza Poza
-                            <VisuallyHiddenInput type="file" onChange={handleImageChange}/>
+                            <VisuallyHiddenInput type="file" onChange={handleImageChange} />
                         </Button>
                         <Button variant="contained" sx={{ margin: "1rem" }} onClick={handleClick}>Creaza lot de pământ</Button>
                     </Box>
@@ -186,13 +186,9 @@ export default function LandList({ landList, setLand }) {
                     Lotul de pamant a fost sters!
                 </Alert>
             </Snackbar>
-            {landList.map((land) =>
-            {
-                // console.log(land);
+            {landList.map((land) => {
                 return <LandCard key={land.id} individualLand={land} setLand={setLand} landList={landList} vegetableList={vegetableList} open={openEditModal} setOpen={setOpenEditModal} handleClose={handleCloseEditModal} setDeletePopup={setDeleteEditPopup} />
-          
-            }
-                  )}
+            })}
         </div>
     )
 }

@@ -9,6 +9,7 @@ export default function Review({ id, producerId,setReviewList }) {
     const [hasReviewed,setHasReviewed] = useState(true);
     
 
+
     useEffect(()=>{
         fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/review/isReviewGivenByUser/${id}&${localStorage.getItem("userId")}`)
         .then(res=>{
@@ -16,6 +17,10 @@ export default function Review({ id, producerId,setReviewList }) {
                 setHasReviewed(true);
             }
             else if (res.status == 401){
+                setHasReviewed(false);
+            }
+
+            if(localStorage.getItem('userId') == producerId){
                 setHasReviewed(false);
             }
         })
@@ -73,7 +78,7 @@ export default function Review({ id, producerId,setReviewList }) {
                     variant="contained"
                     onClick={handleClick}
                     disabled={!hasReviewed}
-                >{hasReviewed ? "Ofera recenzie!" : "Ai oferit deja o recenzie!"}</Button>
+                >Ofera recenzie!</Button>
                 <Rating
                     name='reviewRating'
                     size="large"

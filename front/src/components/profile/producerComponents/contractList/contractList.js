@@ -9,8 +9,10 @@ async function getProducerId() {
 }
 
 async function getAllContractsByProducerId(producerId) {
+    console.log(producerId);
     const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/contract/getAllContractsByProducerId/${producerId}`);
     const data = await response.json();
+    console.log(data)
     return data;
 }
 

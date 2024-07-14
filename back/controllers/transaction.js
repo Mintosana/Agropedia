@@ -24,6 +24,26 @@ const transactionController = {
             res.status(500).send({ message: "Eroare de la server!!" })
         }
     },
+
+    getAllTransactions: async (req, res) => {
+        try {
+            const transactions = await transactionDb.findAll({
+                order: [
+                    ['createdAt', 'DESC']
+                ],
+            });
+
+            if (transactions.length !== 0) {
+                res.status(200).send(transactions);
+            } else {
+                res.status(404).send({ message: "Nu există tranzacții în baza de date!" });
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({ message: "Eroare de la server!!" });
+        }
+    },
+    
     getAllTransactionsById: async (req, res) => {
         try {
             const userId = req.params.id;

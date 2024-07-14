@@ -15,6 +15,10 @@ module.exports = (db) => {
         contractState: {
             type:DataTypes.INTEGER,
             defaultValue: 0,
+        },
+        companyName:{
+            type: DataTypes.STRING,
+            allowNull:true,
         }
     }, {
         tableName: "Contract",

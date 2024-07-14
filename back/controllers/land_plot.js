@@ -52,7 +52,7 @@ const landController = {
                 productId: req.body.productId,
                 imageData: req.body.imageData,
             }
-            console.log(plot);
+            
             assignedProducer = await producerDb.findAll({
                 where: {
                     id: plot.producerId,
@@ -75,6 +75,7 @@ const landController = {
             }
             else {
                 const createdPlot = await landDb.create(plot);
+                console.log(createdPlot);
                 res.status(200).send(createdPlot);
             }
         }
@@ -102,7 +103,12 @@ const landController = {
                     producerId: req.body.producerId,
                     productId: req.body.productId,
                     imageData:req.body.imageData,
+                    fertiliser:req.body.fertilisers ? req.body.fertilisers : null,
+                    treatment:req.body.treatments ? req.body.treatments : null,
                 }
+
+                console.log(newPlot);
+
                 assignedProducer = await producerDb.findAll({
                     where: {
                         id: newPlot.producerId,
@@ -133,7 +139,8 @@ const landController = {
                 }
             }
             catch (error) {
-                res.status(500).send({ message: "Eroare de la server!" });
+                console.log(error)
+                res.status(500).send({ message: error});
             }
         }
     },
@@ -157,7 +164,7 @@ const landController = {
             console.log(error);
             res.status(500).send({ message: "Eroare de la server!" })
         }
-    }
+    },
 }
 
 module.exports = landController

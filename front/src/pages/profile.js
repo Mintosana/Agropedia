@@ -9,6 +9,7 @@ import "./css/profile.css";
 import { useState, useEffect } from 'react';
 import ContractList from "../components/profile/producerComponents/contractList/contractList";
 import TicketButton from "../components/ticketButton/ticketButton";
+import UploadDocument from "../components/companyComponents/uploadDocument/uploadDocument";
 
 export default function Profile() {
     const [transactions, setTransactions] = useState([]);
@@ -59,31 +60,34 @@ export default function Profile() {
         switch (localStorage.getItem("type")) {
             case "Producator": {
                 setUniqueProfileComponent(
-                    <div style={{display:'flex', flexDirection:'column',justifyContent:'space-around', alignItems:'center', gap:'2rem'}}>
-                    <TransactionList>
-                        {transactions.map(transaction => (
-                            <TransactionCard
-                                key={transaction.id}
-                                transactionData={transaction}
-                                setModified={setModified}
-                            />
-                        ))}
-                    </TransactionList>
-                    <ContractList></ContractList>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center', gap: '2rem' }}>
+                        <TransactionList>
+                            {transactions.map(transaction => (
+                                <TransactionCard
+                                    key={transaction.id}
+                                    transactionData={transaction}
+                                    setModified={setModified}
+                                />
+                            ))}
+                        </TransactionList>
+                        <ContractList></ContractList>
                     </div>
                 );
                 break;
             }
             case "Client": {
                 setUniqueProfileComponent(
-                    <TransactionClientHistory>
-                        {transactions.map(transaction => (
-                            <TransactionClientCard
-                                key={transaction.id}
-                                transactionData={transaction}
-                            />
-                        ))}
-                    </TransactionClientHistory>
+                    <div style={{display:"flex", flexDirection:"column", gap:"1rem"}}>
+                        <TransactionClientHistory>
+                            {transactions.map(transaction => (
+                                <TransactionClientCard
+                                    key={transaction.id}
+                                    transactionData={transaction}
+                                />
+                            ))}
+                        </TransactionClientHistory>
+                        <UploadDocument />
+                    </div>
                 );
                 break;
             }

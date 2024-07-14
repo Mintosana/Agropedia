@@ -28,6 +28,15 @@ const ContractCard = ({ contract, onAccept, onDeny }) => {
         onDeny(contract.id);
     };
 
+    const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        return date.toLocaleDateString('ro-RO', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        }) + ' ' + date.toLocaleTimeString('ro-RO');
+    };
+
     return (
         companyData && (
             <Paper elevation={1} sx={{ display: 'flex', alignItems: 'center', padding: 2, marginBottom: 1, borderRadius: 1 }}>
@@ -35,10 +44,10 @@ const ContractCard = ({ contract, onAccept, onDeny }) => {
                     <DownloadIcon />
                 </IconButton>
                 <Box sx={{ flexGrow: 1 }}>
-                    <Typography variant="body1">{`Companie: ${companyData.name}`}</Typography>
+                    <Typography variant="body1">{`Companie: ${contract.companyName ? contract.companyName : companyData.name}`}</Typography>
                     <Typography variant="body1">{`Nr Telefon: ${companyData.phoneNumber}`}</Typography>
                     <Typography variant="body1">{`Email: ${companyData.email}`}</Typography>
-                    <Typography variant="body1">{`Data eliberare contract: ${contract.createdAt}`}</Typography>
+                    <Typography variant="body1">{`Data eliberare contract: ${formatDate(contract.createdAt)}`}</Typography>
                 </Box>
                 <IconButton onClick={handleAccept}>
                     <CheckIcon color="success" />

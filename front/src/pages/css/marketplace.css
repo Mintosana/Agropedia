@@ -1,3 +1,12 @@
-.MarketplaceElementsContainer{
+.MarketplaceElementsContainer {
     display: flex;
+}
+
+.Box {
+    padding: 1rem;
+    background-color: #f5f5f5;
+}
+
+.MarketplaceElementsContainer .MuiTypography-h6 {
+    margin-bottom: 0.5rem;
 }

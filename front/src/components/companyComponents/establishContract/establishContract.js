@@ -21,8 +21,18 @@ export default function EstablishContract() {
         quantity: "",
         price: "",
     });
+    const [productList,setProductList] = useState(products);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/product/getAllProducts`
+        ).then((res) => {
+            return res.json();
+        }).then((productData) => {
+            setProductList(productData.map(element => element.productName));
+        })
+    }, [])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -211,7 +221,7 @@ export default function EstablishContract() {
                         error={!!errors.productName}
                         helperText={errors.productName}
                     >
-                        {products.map((product) => (
+                        {productList.map((product) => (
                             <MenuItem key={product} value={product}>
                                 {product}
                             </MenuItem>
@@ -238,7 +248,7 @@ export default function EstablishContract() {
                     <TextField
                         margin="dense"
                         name="quantity"
-                        label="Cantitate"
+                        label="Cantitate (Kg)"
                         type="text"
                         fullWidth
                         variant="standard"
@@ -250,7 +260,7 @@ export default function EstablishContract() {
                     <TextField
                         margin="dense"
                         name="price"
-                        label="Preț"
+                        label="Preț/Kg"
                         type="text"
                         fullWidth
                         variant="standard"

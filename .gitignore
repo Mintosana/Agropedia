@@ -4,6 +4,8 @@
 /front/node_modules
 /front/.pnp
 /front/.pnp.js
+/back/documents/companyDocuments
+/back/documents/companyContracts
 
 # testing
 /front/coverage

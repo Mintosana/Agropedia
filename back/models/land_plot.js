@@ -24,6 +24,40 @@ module.exports = (db) =>{
             type:DataTypes.STRING,
             allowNull:false,
         },
+        treatment: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            get() {
+                const treatmentList = this.getDataValue('treatment');
+                if(treatmentList){
+                    return this.getDataValue('treatment').split(';');
+                }
+                else return treatmentList;
+                
+            },
+            set(val) {
+                if(val){
+                    this.setDataValue('treatment',val.join(';'));
+                }      
+            },
+        },
+        fertiliser: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            get() {
+                const fertiliserList = this.getDataValue('fertiliser');
+                if(fertiliserList){
+                    return this.getDataValue('fertiliser').split(';');
+                }
+                else return fertiliserList;
+                
+            },
+            set(val) {
+                if(val){
+                    this.setDataValue('fertiliser',val.join(';'));
+                }
+            },
+        },
         imageData:{
             type: DataTypes.TEXT('medium'),
         },

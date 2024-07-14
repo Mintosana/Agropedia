@@ -1,4 +1,4 @@
-const { contractDb, companyDb } = require('../models');
+const { contractDb, companyDb, productDb } = require('../models');
 
 const contractController = {
     uploadContract: async (req, res) => {
@@ -6,13 +6,16 @@ const contractController = {
             const contractBuffer = req.contractBuffer;
             const producerId = req.body.producerId;
             const companyId = req.body.companyId;
+            const companyName = req.body.firmName;
+            const productName = req.body.productName;
 
-
+            const productObject = await productDb.findOne({where: {productName}});
             await contractDb.create({
                 contractData: contractBuffer,
                 producerId: producerId,
                 companyId: companyId,
-                productId: 1,
+                companyName: companyName,
+                productId: productObject.id,
             });
 
             res.status(200).send({ message: "Contractul a fost incarcat cu succes!" });
@@ -72,7 +75,8 @@ const contractController = {
             });
 
             if (contracts.length === 0) {
-                return res.status(404).send({ message: "No contracts found for this producer!" });
+                console.log("No contracts found for this producer!");
+                return res.status(404).send([]);
             }
 
             res.status(200).send(contracts);

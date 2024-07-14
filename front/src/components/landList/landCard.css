@@ -53,3 +53,22 @@ flex-direction: column;
         width:90%;
     }
 }
+
+.submitButton{
+    margin-top: 1rem !important;
+}
+
+.imageButton{
+    margin: 1rem 0 !important;
+}
+
+
+.landPreview.expanded .additionalInfo {
+    display: block;
+    margin:1rem;
+}
+
+.additionalInfo {
+    display: none;
+    margin-top: 10px;
+}

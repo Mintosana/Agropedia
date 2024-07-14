@@ -1,17 +1,20 @@
 import * as React from 'react';
-import {Modal, Box, Typography, TextField, Autocomplete, Button } from '@mui/material';
-import { IconButton } from '@mui/material';
+import { Modal, Box, Typography, TextField, Autocomplete, Button, IconButton } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import './landCard.css'
+import './landCard.css';
 
+export default function LandCard({ individualLand, setLand, landList, vegetableList, setDeletePopup }) {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-export default function LandCard({ individualLand, setLand, landList, vegetableList, open, setOpen, handleClose, setDeletePopup }) {
     const [productName, setProductName] = useState(vegetableList[individualLand.productId - 1]);
     const [humidity, setHumidity] = useState(0);
     const [temperature, setTemperature] = useState(0);
+    const [expanded, setExpanded] = useState(false);
     const plotType = ["Solar", "Sera", "Camp"];
     const plotMetrics = ['ari', 'm²', 'ha'];
 
@@ -23,16 +26,23 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
     const [vegetable, setVegetable] = useState(vegetableList[individualLand.productId - 1]);
     const [image, setImage] = useState(individualLand.imageData);
 
+    const [treatmentList, setTreatmentList] = useState(individualLand.treatment); // CU ASTEA LUCREZ
+    const [fertilizerList, setFertilizerList] = useState(individualLand.fertiliser);  // CU ASTEA LUCREZ
+    const [newTreatment, setNewTreatment] = useState('');
+    const [newFertilizer, setNewFertilizer] = useState('');
+    
     const landData = {
         id: individualLand.id,
         name: name,
         size: size,
-        landType: type,
         location: location,
+        fertilisers: fertilizerList, // CU ASTEA LUCREZ
+        treatments: treatmentList, // CU ASTEA LUCREZ
+        landType: type,
         producerId: individualLand.producerId,
         productId: (vegetableList.findIndex(v => v === vegetable) + 1),
         imageData: image,
-    }
+    };
 
     useEffect(() => {
         fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${landData.location}&limit=1&appid=${process.env.REACT_APP_WEATHER_API}`)
@@ -43,9 +53,9 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
                     .then(res => {
                         setHumidity(res.current.humidity);
                         setTemperature(res.current.temp);
-                    })
-            })
-    }, [landList])
+                    });
+            });
+    }, [landList]);
 
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -71,26 +81,26 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
 
     const handleName = (event) => {
         setName(event.target.value);
-    }
+    };
     const handleSize = (event) => {
         setSize(event.target.value);
-    }
+    };
     const handleType = (event, value) => {
         setType(value);
-        setMetrics(plotMetrics[plotType.findIndex(x => x === value)])
-    }
+        setMetrics(plotMetrics[plotType.findIndex(x => x === value)]);
+    };
     const handleLocation = (event) => {
         setLocation(event.target.value);
-    }
+    };
     const handleVegetable = (event, value) => {
-        setVegetable(value);
-    }
+        setVegetable(value);     
+    };
     const handleImageChange = (event) => {
         if (event.target.files[0]) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImage(reader.result);
-            }
+            };
             reader.readAsDataURL(event.target.files[0]);
         }
     };
@@ -108,54 +118,105 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
             })
             .catch(error => {
                 console.error("Eroare la stergerea lotului de pamant:", error);
-            })
-    }
+            });
+    };
     const handleClick = async () => {
-        console.log("ID-ul pamantului notificat este " + individualLand.id);
         const response = await fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/landPlot/updatePlotById/${individualLand.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(landData),
-        })
+        });
         if (response.ok) {
             setLand(landList.map(land =>
                 land.id === individualLand.id ? landData : land
             ));
+            setProductName(vegetable);
         }
 
         handleClose();
-    }
+    };
     const handleEditClick = async () => {
-        console.log(individualLand.id);
         setOpen(true);
-    }
+    };
+    const toggleExpand = () => {
+        setExpanded(!expanded);
+    };
+    const handleAddTreatment = () => {
+        if (newTreatment.trim()) {
+            console.log(treatmentList)
+            if(treatmentList){
+                setTreatmentList([...treatmentList, newTreatment.trim()]);
+            }
+            else{
+                setTreatmentList([newTreatment.trim()])
+            }
+            
+            setNewTreatment('');
+        }
+    };
+    const handleAddFertilizer = () => {
+        if (newFertilizer.trim()) {
+            if(fertilizerList){
+                setFertilizerList([...fertilizerList, newFertilizer.trim()]);
+            }
+            else{
+                setFertilizerList([newFertilizer.trim()])
+            }
+            setNewFertilizer('');
+        }
+    };
 
     return (
-        <div className='landPreview' key={individualLand.id}>
+        <>
+        <div className={`landPreview ${expanded ? 'expanded' : ''}`} key={individualLand.id} onClick={toggleExpand}>
             <div className='wholeContent'>
                 <div className="imageData">
-                    <img className="cardImage" src={individualLand.imageData} />
+                    <img className="cardImage" src={individualLand.imageData} alt={individualLand.name} />
                     <h3>{individualLand.name}</h3>
                 </div>
                 <div className='contentData'>
-                    <p>Mărime: {individualLand.size} {`${plotMetrics[plotType.findIndex(x => x === individualLand.landType)]}`}</p>
-                    <p>Temperatură: {temperature}C</p>
+                    <p>Mărime: {individualLand.size} {metrics}</p>
+                    <p>Temperatură: {temperature}°C</p>
                     <p>Umiditate: {humidity}%</p>
                     <p>Tip: {individualLand.landType}</p>
                     <p>Produs: {productName}</p>
+                    {expanded && (
+                        <div className='additionalInfo'>
+                            <p>Tratament:
+                                <b>
+                                    {treatmentList && treatmentList.map((treatment, index) => (
+                                        <React.Fragment key={index}>
+                                            <br />
+                                            {treatment}
+                                        </React.Fragment>
+                                    ))}
+                                </b></p>
+                            <p>Fertilizant:
+                                <b>
+                                    {fertilizerList && fertilizerList.map((fertilizer, index) => (
+                                        <React.Fragment key={index}>
+                                            <br />
+                                            {fertilizer}
+                                        </React.Fragment>
+                                    ))}
+                                </b></p>
+                        </div>
+                    )}
                 </div>
                 <div className='manageLandIcons'>
-                    <IconButton onClick={() => handleDeleteClick(individualLand.id)}>
+                    <IconButton onClick={(e) => { e.stopPropagation(); handleDeleteClick(individualLand.id); }}>
                         <Delete />
                     </IconButton>
-                    <IconButton onClick={handleEditClick}>
+                    <IconButton onClick={(e) => { e.stopPropagation(); handleEditClick(); }}>
                         <Edit />
                     </IconButton>
                 </div>
             </div>
-            <Modal
+            
+        </div >
+        <Modal
                 id="plotEditModal"
                 open={open}
                 onClose={handleClose}
@@ -163,44 +224,105 @@ export default function LandCard({ individualLand, setLand, landList, vegetableL
             >
                 <Box sx={style}>
                     <Typography className="modalTitle" variant="h6" component="h2">
-                        Lot de pamant - {individualLand.name}
+                        Lot de pamant - {landData.name}
                     </Typography>
-                    <Box className="plotElementsBox">
-                        <TextField className="plotAddField" defaultValue={name} label="Nume " variant="outlined" margin="dense" onChange={handleName} />
-                        <TextField className="plotAddField" defaultValue={location} label="Locatie " variant="outlined" margin="dense" onChange={handleLocation} />
-                        <TextField className="plotAddField" type="number" defaultValue={size} label={metrics ? `Marime in ${metrics}` : "Marime"} variant="outlined" margin="dense" onChange={handleSize} />
+                    <div className="modalContent">
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Nume"
+                            value={name}
+                            onChange={handleName}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Mărime"
+                            value={size}
+                            onChange={handleSize}
+                        />
                         <Autocomplete
-                            disablePortal
-                            className="plotSelector"
-                            onChange={handleType}
-                            defaultValue={type}
+                            fullWidth
                             options={plotType}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Tip de lot" />}
+                            value={type}
+                            onChange={handleType}
+                            renderInput={(params) => <TextField {...params} margin="normal" label="Tip" />}
+                        />
+                        <TextField
+                            fullWidth
+                            margin="normal"
+                            label="Locație"
+                            value={location}
+                            onChange={handleLocation}
                         />
                         <Autocomplete
-                            disablePortal
-                            className="plotSelector"
+                            fullWidth
                             options={vegetableList}
+                            value={vegetable}
                             onChange={handleVegetable}
-                            defaultValue={vegetableList[individualLand.productId - 1]}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Legume" />}
+                            renderInput={(params) => <TextField {...params} margin="normal" label="Produs" />}
                         />
-                        <input id="imageInput" type="file" onChange={handleImageChange} />
+                        <label htmlFor="imageUpload">
+                            <VisuallyHiddenInput
+                                id="imageUpload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                            />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<CloudUploadIcon />}
+                                component="span"
+                            >
+                                Upload Image
+                            </Button>
+                        </label>
+                        <div className="treatmentList">
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="New Treatment"
+                                value={newTreatment}
+                                onChange={(e) => setNewTreatment(e.target.value)}
+                            />
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={handleAddTreatment}
+                            >
+                                Add Treatment
+                            </Button>
+                        </div>
+                        <div className="fertilizerList">
+                            <TextField
+                                fullWidth
+                                margin="normal"
+                                label="New Fertilizer"
+                                value={newFertilizer}
+                                onChange={(e) => setNewFertilizer(e.target.value)}
+                            />
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={handleAddFertilizer}
+                            >
+                                Add Fertilizer
+                            </Button>
+                        </div>
                         <Button
-                            className="imageButton"
-                            component="label"
+                            fullWidth
                             variant="contained"
-                            startIcon={<CloudUploadIcon />}
+                            color="primary"
+                            onClick={handleClick}
                         >
-                            Ataseaza Poza
-                            <VisuallyHiddenInput type="file" onChange={handleImageChange} />
+                            Save
                         </Button>
-                        <Button variant="contained" sx={{ margin: "1rem" }} onClick={handleClick}>Editeaza lot de pământ</Button>
-                    </Box>
+                    </div>
                 </Box>
             </Modal>
-        </div>
-    )
+        </>
+    );
 }

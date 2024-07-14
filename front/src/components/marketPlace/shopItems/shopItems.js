@@ -1,22 +1,8 @@
 import * as React from 'react'
 import {Box} from "@mui/material"
 import ShopCard from "./shopCard";
-import {useEffect,useState} from 'react';
 
-export default function ShopItems() {
-    const [data,setData] = useState([]);
-    useEffect(()=>{
-        fetch(`${process.env.REACT_APP_LOCALHOST_BACK}/api/sale/getAllSales`)
-        .then((promise)=>{
-            return promise.json()
-        })
-        .then((res) =>{
-            console.log(res);
-            setData(res);
-        })
-    },[])
-    
-
+export default function ShopItems({data}) {
     return (
         <>
         <Box 

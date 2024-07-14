@@ -39,7 +39,7 @@ export default function UploadDocument() {
 
             const result = await response.json();
             if (response.ok) {
-                alert('Document uploaded successfully!');
+                alert('Document trimis cu succes!');
                 setButtonColor('primary');
             } else {
                 alert('Error: ' + result.message);
